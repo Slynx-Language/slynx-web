@@ -33,6 +33,7 @@ export default function Home() {
       onSelect={select}
       prev={prev && { label: prev.title, key: prev.key }}
       next={next && { label: next.title, key: next.key }}
+      editUrl="https://github.com/cykna/slynx-web/blob/main/src/app/docs/content"
     >
       {Content ? <Content /> : <p>Carregando...</p>}
     </DocsLayout>
