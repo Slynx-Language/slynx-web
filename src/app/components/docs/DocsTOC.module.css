@@ -1,0 +1,46 @@
+.toc {
+  width: 180px;
+  min-width: 180px;
+  height: 100%;
+  overflow-y: auto;
+  padding: 24px 16px;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.link {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 4px 0;
+  font-size: 13px;
+  color: var(--foreground);
+  transition: color 0.15s ease, opacity 0.15s ease;
+  line-height: 1.5;
+  opacity: 0.4;
+}
+
+.link:hover {
+  opacity: 0.8;
+}
+
+.linkActive {
+  opacity: 1;
+  color: var(--highlight-color);
+  font-weight: 500;
+}

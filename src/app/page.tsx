@@ -18,6 +18,25 @@ import Testimonials from "./components/testimonial/testimonial";
 *   `--primary-base-color-rgb`: For the background of 'get started' button
 */
 export default function Home() {
+  const [activeKey, setActiveKey] = useState(ARTICLES[0].key)
+  const [Content, setContent]     = useState<React.FC | null>(null)
+
+  useEffect(() => {
+    import(`./docs/content/${activeKey}.mdx`)
+      .then((mod) => setContent(() => mod.default))
+      .catch(() => setContent(null))
+  }, [activeKey])
+
+  const index   = ARTICLES.findIndex((a) => a.key === activeKey)
+  const current = ARTICLES[index]
+  const prev    = ARTICLES[index - 1]
+  const next    = ARTICLES[index + 1]
+
+  const select = (key: string) => {
+    setActiveKey(key)
+    document.getElementById("docs-main")?.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
   return (
     <main className={MainStyles.main}>
       <div className={MainStyles.entry}>
