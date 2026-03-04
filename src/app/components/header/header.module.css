@@ -7,7 +7,7 @@
   max-width: 120rem;
   padding: .6rem 2rem;
   margin-inline: auto;
-  background-color: var(--frame-background);
+  background-color: transparent;
   color: var(--frame-foreground);
 }
 
@@ -113,18 +113,13 @@
   padding: .3rem 1rem;
   border-radius: .5rem;
   text-decoration: none;
-  font-weight: 600;
   color: currentColor;
   background-color: var(--highlight-color);
   transition: background-color .2s ease;
-  border: 2px solid black;
-  box-shadow: 0 3px 1px rgba(0, 0, 0);
   text-align: center;
-
   @media (hover: hover) {
     &:hover {
       background-color: var(--hover-color);
-      box-shadow: 0 2px 1px rgba(0, 0, 0);
     }
   }
 }

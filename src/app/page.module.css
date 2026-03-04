@@ -1,15 +1,122 @@
-.featureContainer {
+.main {
+  --gap-size: 3rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
+  gap: var(--gap-size);
+  padding: 2rem 1rem;
+  max-width: 100%;
+  overflow-x: hidden;
+}
 
-  @media (min-width: 768px) {
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 70%;
-    margin: auto;
+@media (min-width: 768px) {
+  .main {
+    --gap-size: 6rem;
+    padding: 4rem 2rem;
   }
 }
 
+@media (min-width: 1024px) {
+  .main {
+    --gap-size: 8rem;
+    padding: 6rem 3rem;
+  }
+}
 
+@media (min-width: 1280px) {
+  .main {
+    --gap-size: 10rem;
+    padding: 8rem 4rem;
+  }
+}
+
+.main>* {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+}
+
+.entry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.entry>h1 {
+  font-size: clamp(3rem, 10vw, 6rem);
+  color: var(--hover-color);
+}
+
+.entry>h2 {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  color: var(--foreground);
+}
+
+.entry>.start_now {
+  background-color: rgba(var(--primary-base-color-rgb), 0.3);
+  border: 3px solid var(--hover-color);
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+  transition-duration: 300ms;
+  cursor: pointer;
+}
+
+.start_now:hover {
+  scale: 1.1;
+}
+
+.entry>.start_now>a {
+  text-decoration: none;
+  color: var(--hover-color);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+.lang_specs {
+  color: var(--foreground);
+  width: 100%;
+  max-width: 100%;
+}
+
+.lang_specs>h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 2rem;
+}
+
+.lang_specs>div {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+}
+
+@media (min-width: 868px) {
+  .lang_specs>div {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.feature_icon {
+  color: var(--hover-color);
+}
+
+.faq_container {
+  width: 100%;
+  max-width: 100%;
+  padding: 0 1rem;
+}
+
+.faq_title {
+  color: var(--foreground);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  margin-bottom: 1rem;
+}

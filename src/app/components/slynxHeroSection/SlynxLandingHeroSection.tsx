@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './slynxHero.module.css';
 
 /**
@@ -42,9 +42,8 @@ function BadgeButton({ badge, isSelected, index, onClick }: BadgeButtonProps) {
   return (
     <button
       onClick={() => onClick(badge.id)}
-      className={`${styles.badge} ${
-        isSelected ? styles.badgePrimary : styles.badgeSecondary
-      }`}
+      className={`${styles.badge} ${isSelected ? styles.badgePrimary : styles.badgeSecondary
+        }`}
       style={{ animationDelay: `${index * 0.1}s` }}
       aria-pressed={isSelected}
     >
@@ -155,7 +154,7 @@ export function WhySlynxSection(props: WhySlynxSectionProps) {
   const [selectedBadges, setSelectedBadges] = useState<Set<string>>(
     new Set([badges[0]?.id])
   );
-  const [isTyping, setIsTyping] = useState(true);
+
 
   /**
    * Effect hook to animate the typing of code example
@@ -164,16 +163,11 @@ export function WhySlynxSection(props: WhySlynxSectionProps) {
   useEffect(() => {
     let currentIndex = 0;
     setTypedText('');
-    setIsTyping(true);
-    
     const interval = setInterval(() => {
       if (currentIndex <= codeExample.length) {
         setTypedText(codeExample.slice(0, currentIndex));
         currentIndex++;
-      } else {
-        setIsTyping(false);
-        clearInterval(interval);
-      }
+      } else clearInterval(interval);
     }, typingSpeed);
 
     return () => clearInterval(interval);
@@ -193,7 +187,7 @@ export function WhySlynxSection(props: WhySlynxSectionProps) {
   }
 
   return (
-    <div className={styles.container}>      
+    <div className={styles.container}>
       <div className={styles.content}>
         <h1 className={styles.title}>
           {title} <span className={styles.brand}>{brandName}</span>

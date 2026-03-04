@@ -33,6 +33,7 @@
   position: relative;
   cursor: pointer;
   transition-duration: 300ms;
+  text-decoration: none;
 }
 
 .card:hover {

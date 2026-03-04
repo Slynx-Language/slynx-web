@@ -1,25 +1,55 @@
 :root {
+
   --background: #ffffff;
   --foreground: #171717;
+
 
   --frame-background: #1b1b1b;
   --frame-foreground: #ededed;
 
   --title-color: #000;
 
+
   /* Pallete */
   --primary-base-color: #00451f;
+  --primary-base-color-rgb: 0, 69, 31;
   --secondary-base-color: #007334;
   --brand-color: #00a349;
   --highlight-color: #00db63;
   --hover-color: #01ff72;
+  --hover-button: #f0f0f0;
+  --title-color: #000;
 
-  --hover-button: rgba(255, 255, 255, 0.1);
 
+  /* Frame */
   --frame-width: 24px;
   --frame-small-width: calc(var(--frame-width) / 2);
-  --frame-padding: var(--frame-width) var(--frame-small-width) var(--frame-small-width) var(--frame-small-width);
+  --frame-padding: 0px var(--frame-small-width) var(--frame-small-width) var(--frame-small-width);
   --frame-round: 16px;
+
+  /* Footer */
+  --footer-padding: var(--frame-padding);
+
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+button {
+  all: unset;
+}
+
+body,
+html {
+  width: 100vw;
+  max-width: 100%;
+  padding: 0;
+  background-color: var(--background);
+  overflow-x: hidden;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -61,22 +91,6 @@
   padding: 0;
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body,
-html {
-  width: 100vw;
-  height: 100vh;
-  padding: var(--page-padding);
-  overflow: hidden;
-
-  background-color: var(--background);
-  color: var(--foreground);
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-:root {
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 button {

@@ -1,40 +1,24 @@
 .frame {
   display: flex;
   position: relative;
-  width: calc(100% - var(--frame-width));
-  height: calc(100% - var(--frame-width));
-
+  width: 100%;
   background-color: var(--foreground);
   border-radius: 20px;
   overflow: hidden;
   flex-direction: column;
   align-items: center;
   padding: var(--frame-padding);
-  position: relative;
-  overflow:  auto;
-}
-.header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: var(--frame-width);
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--frame-padding)
+  overflow: auto;
 }
 
 .inner {
   --size: calc(100% - var(--frame-width));
   padding: var(--frame-padding);
   width: var(--size);
-  height: 100vh;
   flex-direction: column;
   display: flex;
   background-color: var(--background);
   border-radius: var(--frame-round);
   z-index: 0;
-
 }
 

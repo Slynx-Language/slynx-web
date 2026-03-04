@@ -4,28 +4,23 @@ import styles from "./feature.module.css"
 
 type FeatureProps = {
   title: string,
-  iconSrc: string,
+  icon: ReactNode,
   children: ReactNode
 }
 
 export default function Feature({
   title,
-  iconSrc,
+  icon,
   children
 }: FeatureProps) {
   return (
     <div className={styles.feature}>
       <div>
-        <Image
-          src={iconSrc}
-          alt=""
-          width={48}
-          height={48}
-        />
+        {icon}
       </div>
 
       <h3 className={styles.featureTitle}>{title}</h3>
-      
+
       <div className={styles.featureText}>{children}</div>
     </div>
   )

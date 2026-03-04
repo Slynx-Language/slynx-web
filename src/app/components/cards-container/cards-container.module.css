@@ -1,4 +1,4 @@
-.cards{
+.cards {
   display: flex;
   gap: 20px;
   flex-direction: row;
@@ -7,7 +7,16 @@
   margin: auto;
 }
 
-.started{
+@media (max-width: 868px) {
+  .cards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+.started {
   display: flex;
   justify-content: center;
   text-align: center;
@@ -17,6 +26,6 @@
   color: #00DB63;
 }
 
-.get{
+.get {
   color: white;
 }

@@ -23,8 +23,8 @@ const menuItems = links.map(({ href, text }, index) => (
 ))
 
 export default function NavBar() {
-  const [ isMenuOpen, setIsMenuOpen ] = useState(false)
-  const [ isSmallScreen, setIsSmallScreen ] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isSmallScreen, setIsSmallScreen] = useState(false)
 
   useEffect(() => {
     const handleResize = () => {
@@ -48,30 +48,30 @@ export default function NavBar() {
     <nav>
       {
         isSmallScreen ?
-        <>
-          <MenuButton handleClick={toggleMenu} isMenuOpen={isMenuOpen} />
-          <MobileMenu isMenuOpen={isMenuOpen}>
+          <>
+            <MenuButton handleClick={toggleMenu} isMenuOpen={isMenuOpen} />
+            <MobileMenu isMenuOpen={isMenuOpen}>
+              {menuItems}
+              <Link href="#" className={`getStartedLink ${styles.mobileGetStartedLink}`}>Get Started</Link>
+              <li className={styles.mobileActions}>
+                <button type="button" className={styles.mobileIconBtn}>
+                  <Icon icon="material-symbols:search-rounded" height={24} />
+                </button>
+                <button type="button" className={styles.mobileIconBtn}>
+                  <Icon icon="material-symbols:dark-mode-outline-rounded" height={24} />
+                </button>
+                <button type="button" className={styles.mobileIconBtn}>
+                  <Icon icon="material-symbols:translate" height={24} />
+                </button>
+                <a href="https://github.com/slynx/slynx" target="_blank" className={styles.mobileIconBtn}>
+                  <IconGithub />
+                </a>
+              </li>
+            </MobileMenu>
+          </> :
+          <ul className={styles.navBarMenu}>
             {menuItems}
-            <Link href="#" className={`getStartedLink ${styles.mobileGetStartedLink}`}>Get Started</Link>
-            <li className={styles.mobileActions}>
-              <button type="button" className={styles.mobileIconBtn}>
-                <Icon icon="material-symbols:search-rounded" height={24} />
-              </button>
-              <button type="button" className={styles.mobileIconBtn}>
-                <Icon icon="material-symbols:dark-mode-outline-rounded" height={24} />
-              </button>
-              <button type="button" className={styles.mobileIconBtn}>
-                <Icon icon="material-symbols:translate" height={24} />
-              </button>
-              <a href="https://github.com/slynx/slynx" target="_blank" className={styles.mobileIconBtn}>
-                <IconGithub />
-              </a>
-            </li>
-          </MobileMenu>
-        </> :
-        <ul className={styles.navBarMenu}>
-          {menuItems}
-        </ul>
+          </ul>
       }
     </nav>
   )

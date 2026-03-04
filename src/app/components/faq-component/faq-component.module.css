@@ -2,7 +2,7 @@
 /* Main container */
 /* Main container with scoped variables */
 .container {
-  --container-width: 500px;
+  --container-width: 100%;
   --container-bg: #050505;      
   --container-border: #2a2a2d;
   --container-radius: 15px;

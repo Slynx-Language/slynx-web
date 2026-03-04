@@ -1,9 +1,11 @@
+
 .navBarMenu {
   grid-area: nav;
   display: flex;
   justify-self: center;
   gap: 3rem;
 }
+
 
 .navBarMenu li {
   list-style-type: none;

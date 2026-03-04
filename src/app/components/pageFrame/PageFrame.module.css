@@ -1,0 +1,45 @@
+:root {
+  --frame-element-size: calc(100% - var(--frame-width));
+}
+
+.frame {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: stretch;
+  
+  width: var(--frame-element-size);
+
+  background-color: var(--foreground);
+  border-radius: 20px;
+
+  padding: var(--frame-padding);
+  
+  overflow: auto;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: var(--frame-element-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inner {
+  padding: var(--frame-padding);
+  width: var(--frame-element-size);
+  
+  flex-direction: column;
+  display: flex;
+
+  background-color: var(--background);
+  border-radius: var(--frame-round);
+
+  z-index: 0;
+
+
+}
+
