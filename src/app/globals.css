@@ -1,6 +1,5 @@
 :root {
-
-  --background: #ffffff;
+  --background: #000000;
   --foreground: #171717;
 
 
@@ -11,6 +10,8 @@
 
 
   /* Pallete */
+  --commum-text: #9CA3AF;
+  --card-icons: #61FFA8;
   --primary-base-color: #00451f;
   --primary-base-color-rgb: 0, 69, 31;
   --secondary-base-color: #007334;
@@ -25,7 +26,7 @@
   --frame-width: 24px;
   --frame-small-width: calc(var(--frame-width) / 2);
   --frame-padding: 0px var(--frame-small-width) var(--frame-small-width) var(--frame-small-width);
-  --frame-round: 16px;
+  --frame-round: 50px;
 
   /* Footer */
   --footer-padding: var(--frame-padding);
@@ -36,7 +37,7 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
 button {
@@ -54,7 +55,7 @@ html {
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --background: #1b1b1b;
+    --background: #000000;
     --foreground: #ededed;
 
     --frame-background: #fff;
@@ -65,7 +66,7 @@ html {
 }
 
 :root.dark {
-  --background: #1b1b1b;
+  --background: #000000;
   --foreground: #ededed;
 
   --frame-background: #fff;
@@ -90,7 +91,7 @@ html {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
 button {
