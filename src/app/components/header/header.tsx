@@ -4,6 +4,7 @@ import Icon from "@/app/components/icon"
 import styles from "./header.module.css"
 import Logo from "../logo/logo"
 import IconGithub from "@/app/components/IconGithub"
+import ThemeToggle from "../theme-toggle/theme-toggle"
 
 
 export default function Header() {
@@ -28,13 +29,13 @@ export default function Header() {
           <Icon icon="material-symbols:search-rounded" height={24} />
         </button>
 
-        <Link href="#" className={`getStartedLink ${styles.headerGetStartedLink}`}>Get Started</Link>
+        {/* <Link href="#" className={`getStartedLink ${styles.headerGetStartedLink}`}>Get Started</Link>
 
         <ThemeToggle />
 
         <button type="button" className={styles.iconBtn}>
           <Icon icon="material-symbols:translate" height={24} />
-        </button>
+        </button> */}
 
         <a href="https://github.com/slynx/slynx" target="_blank" className={styles.iconBtn}>
           <IconGithub />
