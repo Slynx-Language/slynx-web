@@ -1,10 +1,21 @@
 .feature {
-  width: clamp(300px, 30%, 500px);
-  padding: 2rem;
+  width: 100%;
+  max-width: 1100px;
 }
 
 .featureTitle {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: var(--title-color);
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 500px;
+  font-weight: bold;
+  font-size: 36;
+}
+
+.featureText {
+  margin-top: 2.5rem;
+  width: 100%;
+  max-width: 500px;
+  font-size: 24;
+  color: var(--commum-text);
+  line-height: 38px;
 }

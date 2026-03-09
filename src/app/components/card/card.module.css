@@ -1,8 +1,8 @@
 .card {
   --card-shadow: #1f1f1f;
-  --card-width: 320px;
-  --card-height: calc(var(--card-width) * 0.75);
-  --card-padding: 16px;
+  --card-width: 400px;
+  --card-height: 455px;
+  --card-padding: 22px;
   
   --card-background: #1a1a1a;
   --card-lighter-background: color-mix(
@@ -68,7 +68,8 @@
 
 .title {
   color: var(--foreground);
-  font-size: 16px;
+  font-size: 36px;
+  font-weight: bold;
 }
 
 .link {
@@ -80,7 +81,8 @@
   align-items: center;
   margin: 0;
   padding: 0;
-  font-size: 14px;
+  font-size: 24px;
+  font-weight: 600;
 }
 
 .baixo {
