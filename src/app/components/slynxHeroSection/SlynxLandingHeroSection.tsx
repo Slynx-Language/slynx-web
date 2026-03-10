@@ -1,7 +1,78 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import styles from './slynxHero.module.css';
+
+/** Token types for syntax highlighting (Dracula theme) */
+type TokenType = 'keyword' | 'string' | 'number' | 'type' | 'identifier' | 'comment' | 'default';
+
+interface Token {
+  type: TokenType;
+  value: string;
+}
+
+const KEYWORDS = new Set([
+  'style', 'component', 'func', 'struct', 'const', 'let', 'mut', 'for', 'in',
+  'void', 'if', 'else', 'return', 'true', 'false', 'int', 'float', 'type', 'impl',
+]);
+
+/**
+ * Tokenizes code for syntax highlighting. Supports partial input (typing animation).
+ */
+function tokenize(code: string): Token[] {
+  const tokens: Token[] = [];
+  let i = 0;
+
+  while (i < code.length) {
+    // Comment (line)
+    if (code.slice(i, i + 2) === '//') {
+      let end = code.indexOf('\n', i);
+      if (end === -1) end = code.length;
+      tokens.push({ type: 'comment', value: code.slice(i, end) });
+      i = end;
+      continue;
+    }
+
+    // String (double quote, allow unclosed)
+    if (code[i] === '"') {
+      let end = i + 1;
+      while (end < code.length && code[end] !== '"' && code[end] !== '\n') {
+        if (code[end] === '\\') end++;
+        end++;
+      }
+      if (end < code.length && code[end] === '"') end++;
+      tokens.push({ type: 'string', value: code.slice(i, end) });
+      i = end;
+      continue;
+    }
+
+    // Number
+    const numMatch = code.slice(i).match(/^\d+\.?\d*/);
+    if (numMatch) {
+      tokens.push({ type: 'number', value: numMatch[0] });
+      i += numMatch[0].length;
+      continue;
+    }
+
+    // Word (keyword, type PascalCase, or identifier)
+    const wordMatch = code.slice(i).match(/^[a-zA-Z_][a-zA-Z0-9_]*/);
+    if (wordMatch) {
+      const word = wordMatch[0];
+      let type: TokenType = 'identifier';
+      if (KEYWORDS.has(word)) type = 'keyword';
+      else if (/^[A-Z]/.test(word)) type = 'type';
+      tokens.push({ type, value: word });
+      i += word.length;
+      continue;
+    }
+
+    // Single character (punctuation, newline, etc.)
+    tokens.push({ type: 'default', value: code[i] });
+    i++;
+  }
+
+  return tokens;
+}
 
 /**
  * Badge configuration object
@@ -186,6 +257,24 @@ export function WhySlynxSection(props: WhySlynxSectionProps) {
     }
   }
 
+  const highlightedCode = useMemo(() => {
+    const tokens = tokenize(typedText);
+    const classByType: Record<TokenType, string> = {
+      keyword: styles.tokenKeyword,
+      string: styles.tokenString,
+      number: styles.tokenNumber,
+      type: styles.tokenType,
+      identifier: styles.tokenIdentifier,
+      comment: styles.tokenComment,
+      default: styles.tokenDefault,
+    };
+    return tokens.map((t, i) => (
+      <span key={i} className={classByType[t.type]}>
+        {t.value}
+      </span>
+    ));
+  }, [typedText]);
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -222,7 +311,7 @@ export function WhySlynxSection(props: WhySlynxSectionProps) {
           <div className={styles.codeBody}>
             <pre className={styles.codeContent}>
               <code>
-                {typedText}
+                {highlightedCode}
                 <span className={styles.cursor}></span>
               </code>
             </pre>

@@ -6,7 +6,7 @@ import MainStyles from "./page.module.css";
 import Feature from "./components/feature/feature";
 import { Icon } from "@iconify/react";
 import Cards from "./components/cards-container/cards-container";
-import WhySlynxSection from "./components/slynxHeroSection/SlynxLandingHeroSection";
+import WhySlynxContainer from "./components/slynxHeroSection/WhySlynxContainer";
 import FaqItem from "./components/faq-component/faq-component";
 import { LangCapabilities } from "./components/capabilities/lang-capabilities";
 import Testimonials from "./components/testimonial/testimonial";
@@ -22,7 +22,7 @@ import { ARTICLES } from "./docs/articles";
 */
 export default function Home() {
   const [activeKey, setActiveKey] = useState(ARTICLES[0].key)
-  const [Content, setContent]     = useState<React.FC | null>(null)
+  const [Content, setContent] = useState<React.FC | null>(null)
 
   useEffect(() => {
     import(`./docs/content/${activeKey}.mdx`)
@@ -30,10 +30,10 @@ export default function Home() {
       .catch(() => setContent(null))
   }, [activeKey])
 
-  const index   = ARTICLES.findIndex((a) => a.key === activeKey)
+  const index = ARTICLES.findIndex((a) => a.key === activeKey)
   const current = ARTICLES[index]
-  const prev    = ARTICLES[index - 1]
-  const next    = ARTICLES[index + 1]
+  const prev = ARTICLES[index - 1]
+  const next = ARTICLES[index + 1]
 
   const select = (key: string) => {
     setActiveKey(key)
@@ -51,20 +51,56 @@ export default function Home() {
       </div>
       <div className={MainStyles.lang_specs}>
         <h1>What is Slynx?</h1>
+
         <div>
-          <Feature title="Performatic Language" icon={<Icon icon="material-symbols:speed" width="48" height="48" className={MainStyles.feature_icon} />} >
-            Hello world
+          <Feature
+            title="Performatic Language"
+            icon={
+              <Icon
+                icon="material-symbols:speed"
+                width="48"
+                height="48"
+                className={MainStyles.feature_icon}
+              />
+            }
+          >
+            Optimized for modern hardware with lightning-fast execution times and
+            zero-cost abstractions.
           </Feature>
-          <Feature title="Performatic Language" icon={<Icon icon="material-symbols:speed" width="48" height="48" className={MainStyles.feature_icon} />} >
-            Hello world
+
+          <Feature
+            title="A Result You Can Trust"
+            icon={
+              <Icon
+                icon="ant-design:safety-outlined"
+                width="48"
+                height="48"
+                className={MainStyles.feature_icon}
+              />
+            }
+          >
+            Deterministic behavior ensures your code runs exactly as expected across
+            every environment.
           </Feature>
-          <Feature title="Performatic Language" icon={<Icon icon="material-symbols:speed" width="48" height="48" className={MainStyles.feature_icon} />} >
-            Hello world
+
+          <Feature
+            title="Safety at Scale"
+            icon={
+              <Icon
+                icon="material-symbols:security"
+                width="48"
+                height="48"
+                className={MainStyles.feature_icon}
+              />
+            }
+          >
+            Built-in safety features that catch bugs at compile-time before they
+            reach your users.
           </Feature>
         </div>
       </div>
       <div> <Cards /> </div>
-      <WhySlynxSection title="Why" brandName="Slynx" description="Bla ble bli blo blu" badges={[]} codeExample="aaa" fileName="main.sx" typingSpeed={300} />
+      <WhySlynxContainer />
       <LangCapabilities capabilities={[
         { title: "UI mordernas", description: "Crie interfaces otimizadas e estilosas com a nossa engine" },
         { title: "UI mordernas", description: "Crie interfaces otimizadas e estilosas com a nossa engine" },

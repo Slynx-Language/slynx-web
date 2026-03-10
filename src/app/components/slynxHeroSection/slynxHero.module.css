@@ -2,9 +2,9 @@
 
 .container {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
+  align-items: left;
+  justify-content: left;
   padding: 2rem;
 }
 
@@ -29,9 +29,10 @@
 
 .title {
   font-family: 'Familjen Grotesk', sans-serif;
-  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-size: 64px;
   font-weight: 700;
-  color: var(--brand-color);
+  
+  color: #fff;
   margin: 0 0 1.5rem 0;
   letter-spacing: -0.03em;
   line-height: 1.1;
@@ -40,7 +41,7 @@
 .description {
   font-family: 'Familjen Grotesk', sans-serif;
   font-size: clamp(1rem, 2.5vw, 1.125rem);
-  color: #94a3b8;
+  color: var(--commum-text);
   line-height: 1.7;
   margin: 0 0 2rem 0;
   font-weight: 400;
@@ -55,12 +56,16 @@
 
 .badge {
   font-family: 'Familjen Grotesk', sans-serif;
-  padding: 0.625rem 1.25rem;
-  border-radius: 2rem;
-  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 24px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
   opacity: 0;
   animation: fadeInBadge 0.6s ease-out forwards;
   border: none;
@@ -80,15 +85,14 @@
 
 /* Badge quando selecionado */
 .badgePrimary {
-  background: var(--brand-color);
-  color: #fff;
-  border: 1px solid var(--brand-color);
+  background-color: rgba(var(--primary-base-color-rgb), 0.3);
+  border: 3px solid var(--hover-color);
+  color: var(--hover-color);
   font-weight: 500;
 }
 
 .badgePrimary:hover {
-  background: var(--highlight-color);
-  border-color: var(--highlight-color);
+  transform: scale(1.05);
 }
 
 .badgePrimary:active {
@@ -97,26 +101,46 @@
 
 /* Badge quando não selecionado */
 .badgeSecondary {
-  background: transparent;
+  background-color: transparent;
   color: #94a3b8;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 3px solid transparent;
 }
 
 .badgeSecondary:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.25);
-  color: #ffffff;
+  background-color: rgba(var(--primary-base-color-rgb), 0.15);
+  border-color: var(--hover-color);
+  color: var(--hover-color);
+  transform: scale(1.05);
 }
 
 .badgeSecondary:active {
   transform: scale(0.98);
 }
 
+/* Dracula theme variables for the IDE simulator */
 .codeWindow {
-  background: #1a1f1c;
+  /* Dracula palette */
+  --dracula-bg: #282a36;
+  --dracula-bg-header: #21222c;
+  --dracula-fg: #f8f8f2;
+  --dracula-comment: #6272a4;
+  --dracula-cyan: #8be9fd;
+  --dracula-green: #50fa7b;
+  --dracula-orange: #ffb86c;
+  --dracula-pink: #ff79c6;
+  --dracula-purple: #bd93f9;
+  --dracula-red: #ff5555;
+  --dracula-yellow: #f1fa8c;
+  --dracula-border: #44475a;
+
+  background: var(--dracula-bg);
   border-radius: 1rem;
   overflow: hidden;
   animation: slideInCode 0.8s ease-out 0.3s backwards;
+}
+
+.brand {
+  color: var(--card-icons);
 }
 
 @keyframes slideInCode {
@@ -131,12 +155,12 @@
 }
 
 .codeHeader {
-  background: #141816;
+  background: var(--dracula-bg-header);
   padding: 0.875rem 1rem;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--dracula-border);
 }
 
 .trafficLights {
@@ -169,14 +193,14 @@
 .fileName {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.75rem;
-  color: #64748b;
+  color: var(--dracula-comment);
   letter-spacing: 0.05em;
   font-weight: 500;
 }
 
 .codeBody {
   padding: 1.5rem;
-  background: #0f1311;
+  background: var(--dracula-bg);
   position: relative;
   min-height: 200px;
 }
@@ -185,7 +209,7 @@
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.875rem;
   line-height: 1.7;
-  color: #94a3b8;
+  color: var(--dracula-fg);
   margin: 0;
   position: relative;
 }
@@ -196,7 +220,7 @@
 }
 
 .codeLine:hover {
-  background: rgba(52, 211, 153, 0.05);
+  background: var(--dracula-border);
   margin: 0 -1rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -213,8 +237,49 @@
   }
 }
 
+.cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 2px;
+  background: var(--dracula-fg);
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+
 .codeContent code {
   display: block;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--dracula-fg);
+}
+
+/* Dracula syntax highlighting (VS Code style) */
+.tokenKeyword {
+  color: var(--dracula-purple);
+}
+
+.tokenString {
+  color: var(--dracula-green);
+}
+
+.tokenNumber {
+  color: var(--dracula-orange);
+}
+
+.tokenType {
+  color: var(--dracula-cyan);
+}
+
+.tokenIdentifier {
+  color: var(--dracula-pink);
+}
+
+.tokenComment {
+  color: var(--dracula-comment);
+}
+
+.tokenDefault {
+  color: var(--dracula-fg);
 }
 
 /* Responsive adjustments */
