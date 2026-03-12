@@ -16,7 +16,7 @@
   --transition-speed: 0.3s;
 
   position: relative;
-  max-width: 100%;
+  max-width: 730px;
   width: var(--container-width);
   background: linear-gradient(to left, var(--container-bg), #0c0c0c);
   border: 2px solid var(--container-border);
@@ -47,12 +47,13 @@
 
 /* Header section */
 .faqHeader {
-  width: 100%;
+  width: 95%;
   background: transparent;  
   border: none;
   padding: 20px;
   color: var(--header-color);
-  font-size: 16px;
+  font-size: 24px;
+  font-weight: bold;
   display: flex;
   justify-content: space-between;
   align-items: center;

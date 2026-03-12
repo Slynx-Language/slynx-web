@@ -70,7 +70,7 @@ export default function FaqItem({ question, answer }: FaqItemProps) {
         >
           <Icon 
             icon="material-symbols:keyboard-arrow-down" 
-            width={30} 
+            width={44} 
           />
         </span>
       </button>
