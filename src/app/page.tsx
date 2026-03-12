@@ -105,6 +105,10 @@ export default function Home() {
         { title: "modern UIs", description: "Create buttery smooth 120fps interfaces with our declarative UI engine." },
         { title: "Componentization", description: "Modular architecture designed for massive team collaboration and reuse." },
       ]} title="What's possible with" emphasized_text="Slynx" />
+      {/*
+      
+      The following sections were commented for lack of content
+
       <Testimonials testimonials={[{
         author: 'Owner',
         id: 0,
@@ -112,10 +116,10 @@ export default function Home() {
         text: "The project is ongoing and yet there's no testimonial"
       }]} />
       <div className={MainStyles.faq_container}>
-        <h1 className={MainStyles.faq_title}>Faq</h1>
+        <h1 className={MainStyles.faq_title}>FAQ</h1>
         <FaqItem question="Is it ready for production" answer="No the language is experimental and has a lot to improve" />
         <FaqItem question="Is it ready for production" answer="No the language is experimental and has a lot to improve" />
-        <FaqItem question="Is it ready for production" answer="No the language is experimental and has a lot to improve" />     </div>
+        <FaqItem question="Is it ready for production" answer="No the language is experimental and has a lot to improve" />     </div> */}
     </main>
   );
 }
