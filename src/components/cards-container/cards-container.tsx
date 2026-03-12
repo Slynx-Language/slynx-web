@@ -1,5 +1,5 @@
-import { Card } from '@/app/components/card/card'
-import Icon from "@/app/components/icon"
+import { Card } from '../card/card'
+import Icon from "../icon"
 import styles from "./cards-container.module.css"
 export default function Cards() {
     return (

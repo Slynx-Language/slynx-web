@@ -1,7 +1,7 @@
 // mdx-components.tsx
 import type { MDXComponents } from "mdx/types"
-import { DocsSection, DocsCodeBlock } from "./src/app/components/docs/DocsContent"
-import styles from "./src/app/components/docs/DocsContent.module.css"
+import { DocsSection, DocsCodeBlock } from "./src/components/docs/DocsContent"
+import styles from "./src/components/docs/DocsContent.module.css"
 
 /**
  * Maps MDX tags to styled documentation components.

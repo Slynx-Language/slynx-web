@@ -1,7 +1,7 @@
 'use client'
 
 import { useTheme } from "@/app/theme/provider"
-import Icon from "@/app/components/icon"
+import Icon from "../icon"
 import styles from "../header/header.module.css"
 
 /**

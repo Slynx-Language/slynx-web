@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import MainStyles from "./page.module.css";
-import Feature from "./components/feature/feature";
+import Feature from "../components/feature/feature";
 import { Icon } from "@iconify/react";
-import Cards from "./components/cards-container/cards-container";
-import WhySlynxContainer from "./components/slynxHeroSection/WhySlynxContainer";
-import FaqItem from "./components/faq-component/faq-component";
-import { LangCapabilities } from "./components/capabilities/lang-capabilities";
-import Testimonials from "./components/testimonial/testimonial";
+import Cards from "../components/cards-container/cards-container";
+import WhySlynxContainer from "../components/slynxHeroSection/WhySlynxContainer";
+import FaqItem from "../components/faq-component/faq-component";
+import { LangCapabilities } from "../components/capabilities/lang-capabilities";
+import Testimonials from "../components/testimonial/testimonial";
 import { ARTICLES } from "./docs/articles";
 
 /**

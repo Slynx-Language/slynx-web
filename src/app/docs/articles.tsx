@@ -2,7 +2,7 @@
 // Single source of truth for all documentation content.
 // To add a new article: add an object to DOCS and create the matching .mdx file.
 
-import type { TocItem } from "../components/docs/DocsTOC"
+import type { TocItem } from "../../components/docs/DocsTOC"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

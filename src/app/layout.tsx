@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css"
-import PageFrame from "./components/PageFrame";
-import Header from "./components/header/header";
-import { Footer } from "./components/footer/Footer";
+import PageFrame from "../components/PageFrame";
+import Header from "../components/header/header";
+import { Footer } from "../components/footer/Footer";
 
 const inter = Inter({
   variable: "--font-inter",

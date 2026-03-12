@@ -1,9 +1,9 @@
 import NavBar from "./nav-bar/nav-bar"
 import Link from "next/link"
-import Icon from "@/app/components/icon"
+import Icon from "../icon"
 import styles from "./header.module.css"
 import Logo from "../logo/logo"
-import IconGithub from "@/app/components/IconGithub"
+import IconGithub from "../IconGithub"
 import ThemeToggle from "../theme-toggle/theme-toggle"
 
 

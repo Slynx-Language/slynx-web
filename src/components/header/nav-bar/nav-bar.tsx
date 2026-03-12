@@ -5,8 +5,8 @@ import { useState, useEffect } from "react"
 import MenuButton from "./menu-button/menu-button"
 import MobileMenu from "./mobile-menu/mobile-menu"
 import Link from "next/link"
-import Icon from "@/app/components/icon"
-import IconGithub from "@/app/components/IconGithub"
+import Icon from "../../icon"
+import IconGithub from "../../IconGithub"
 import styles from "./nav-bar.module.css"
 
 const links = [
