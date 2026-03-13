@@ -4,13 +4,11 @@ import Icon from "@/app/components/icon"
 import styles from "./header.module.css"
 import Logo from "../logo/logo"
 import IconGithub from "@/app/components/IconGithub"
-import ThemeToggle from "../theme-toggle/theme-toggle"
-
+import { LangToggle } from "@/app/i18n/LangToggle"
 
 export default function Header() {
   return (
     <header className={styles.header}>
-
       <div className={styles.logoContainer}>
         <Link href="/" className={styles.logoLink}>
           <Logo className={styles.logo} />
@@ -22,21 +20,12 @@ export default function Header() {
           </span>
         </Link>
       </div>
-
       <NavBar />
       <div className={styles.actions}>
         <button type="button" className={styles.iconBtn}>
           <Icon icon="material-symbols:search-rounded" height={24} />
         </button>
-
-        {/* <Link href="#" className={`getStartedLink ${styles.headerGetStartedLink}`}>Get Started</Link>
-
-        <ThemeToggle />
-
-        <button type="button" className={styles.iconBtn}>
-          <Icon icon="material-symbols:translate" height={24} />
-        </button> */}
-
+        <LangToggle />
         <a href="https://github.com/slynx/slynx" target="_blank" className={styles.iconBtn}>
           <IconGithub />
         </a>
