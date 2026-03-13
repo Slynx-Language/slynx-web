@@ -57,6 +57,7 @@
   text-decoration: none;
   transition-duration: 300ms;
   font-size: clamp(0.9rem, 1.5vw, 1rem);
+  font-weight: 300;
 }
 
 .footer>div>a:hover {
