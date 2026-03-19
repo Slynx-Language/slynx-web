@@ -1,10 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
 import FooterStyles from "./Footer.module.css";
-
-
-export function SlynxLogo() {
-  return <div></div>
-}
 
 /**
  * Creates the footer of the landing page. According to the figma design at `https://www.figma.com/design/Px7bugd5SwPJoVAhVcHhxf/Slynx?node-id=0-1&t=WHAHXM9qxGcr0igM-1`
@@ -22,8 +18,13 @@ export function Footer() {
     <div className={FooterStyles.outer}>
       <div className={FooterStyles.footer}>
         <div>
-          <div>
-            <SlynxLogo />
+          <div className={FooterStyles.brandRow}>
+            <Image
+              src="/lynx-64px-safe.svg"
+              alt="Slynx logo"
+              width={80}
+              height={80}
+            />
             <h1 className={FooterStyles.footer_title}>Slynx</h1>
           </div>
         </div>

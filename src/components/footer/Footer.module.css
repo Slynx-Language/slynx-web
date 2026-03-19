@@ -68,6 +68,12 @@
   color: var(--secondary-base-color);
 }
 
+.brandRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .end_of_page {
   height: 100%;
   display: flex;
