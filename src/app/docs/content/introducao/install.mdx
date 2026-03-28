@@ -1,0 +1,36 @@
+## Installation
+
+Since Slynx is in a embryonic stage, it doesn't share any kind of binary yet. 
+Just follow the following steps to be able to compile and start to use it:
+
+## Dependencies
+
+Before starting, make sure you have the following tools installed:
+
+- Rust
+- Git
+
+
+## Clone and build
+
+```bash
+git clone https://github.com/cykna/slynx
+cd slynx
+cargo build --release
+```
+
+## Run with a file
+
+And try to run it with any file (note that it will not execute, but only compile the slynx code to js code):
+
+```bash
+cargo run -- --target path/to/file.slynx
+```
+
+## Run with justfile
+
+Or, if you got justfile installed, simply execute:
+
+```bash
+just run path/to/file.slynx
+```

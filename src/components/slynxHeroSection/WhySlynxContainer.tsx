@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import WhySlynxSection from './SlynxLandingHeroSection';
+import { useLang } from '@/app/i18n/LangContext';
 
 type FeatureId = 'simple' | 'performance' | 'data-oriented';
 
 const featureCodeExamples: Record<FeatureId, string> = {
-  simple: `
-style Vertical(){
+  simple: `style Vertical(){
   grow_direction = Direction.Vertical;
 }
 
@@ -30,8 +30,7 @@ component Website {
 }
 
 func main():Component -> Website {};`,
-  performance: `
-struct Vec2 {
+  performance: `struct Vec2 {
   x: float,
   y: float
 }
@@ -65,32 +64,19 @@ func main(): void{
 
 export default function WhySlynxContainer() {
   const [selectedFeature, setSelectedFeature] = useState<FeatureId>('simple');
+  const { t } = useLang();
 
   const badges = [
-    {
-      id: 'simple',
-      text: 'Simple',
-      variant: selectedFeature === 'simple' ? ('primary' as const) : ('secondary' as const),
-    },
-    {
-      id: 'performance',
-      text: 'Performance',
-      variant:
-        selectedFeature === 'performance' ? ('primary' as const) : ('secondary' as const),
-    },
-    {
-      id: 'data-oriented',
-      text: 'Data Oriented',
-      variant:
-        selectedFeature === 'data-oriented' ? ('primary' as const) : ('secondary' as const),
-    },
+    { id: 'simple', text: t.why.simple, variant: selectedFeature === 'simple' ? ('primary' as const) : ('secondary' as const) },
+    { id: 'performance', text: t.why.performance, variant: selectedFeature === 'performance' ? ('primary' as const) : ('secondary' as const) },
+    { id: 'data-oriented', text: t.why.dataOriented, variant: selectedFeature === 'data-oriented' ? ('primary' as const) : ('secondary' as const) },
   ];
 
   return (
     <WhySlynxSection
-      title="Why"
+      title={t.why.title}
       brandName="Slynx?"
-      description="Experience a syntax that feels natural, a compiler that guides you, and performance that scales with your ambitions."
+      description={t.why.description}
       badges={badges}
       codeExample={featureCodeExamples[selectedFeature]}
       fileName="main.sx"
@@ -99,4 +85,3 @@ export default function WhySlynxContainer() {
     />
   );
 }
-

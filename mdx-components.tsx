@@ -16,7 +16,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     h2: ({ children, id }) => (
       <h2 id={id} className={styles.sectionTitle}>
-        # {children}
+         {children}
       </h2>
     ),
     p: ({ children }) => (

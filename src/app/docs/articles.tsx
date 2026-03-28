@@ -52,35 +52,31 @@ interface DocArticle {
  */
 const DOCS: DocArticle[] = [
   {
-    key: "introducao/o-que-e",
-    label: "O que é?",
-    title: "O que é?",
-    section: "Introdução",
-    topics: [
-      { id: "visao-geral", label: "Visão geral" },
-      { id: "motivacao",   label: "Motivação" },
-    ],
+    key: "introducao/what-is-slynx",
+    label: "What is Slynx?",
+    title: "What is Slynx?",
+    section: "Introduction",
+topics: [
+  { id: "slynx-is-a-data-driven-and-ui-language",  label: "Data driven & UI language" },
+  { id: "why-let-the-community-compile-the-ir-so", label: "Why community compiles the IR?" },
+  { id: "what-is-and-why-data-driven",             label: "What is data driven?" },
+  { id: "what-makes-it-different-from-other-languages", label: "What makes it different?" },
+  { id: "what-does-it-support",                    label: "What does it support?" },
+],
   },
-  {
-    key: "introducao/instalacao",
-    label: "Instalação",
-    title: "Instalação",
-    section: "Introdução",
-    topics: [
-      { id: "requisitos", label: "Requisitos" },
-      { id: "instalando", label: "Instalando" },
-    ],
-  },
-  {
-    key: "guias/primeiros-passos",
-    label: "Primeiros passos",
-    title: "Primeiros passos",
-    section: "Guias",
-    topics: [
-      { id: "configuracao", label: "Configuração" },
-      { id: "uso-basico",   label: "Uso básico" },
-    ],
-  },
+  
+{
+  key: "introducao/install",
+  label: "Installation",
+  title: "Installation",
+  section: "Introduction",
+  topics: [
+    { id: "installation",    label: "Installation" },
+    { id: "clone-and-build", label: "Clone and build" },
+    { id: "run-with-a-cargo", label: "Run with a cargo" },
+    { id: "run-with-justfile", label: "Run with justfile" },
+  ],
+},
 ]
 
 // ─── Derived exports ──────────────────────────────────────────────────────────
