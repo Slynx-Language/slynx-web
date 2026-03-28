@@ -33,6 +33,12 @@ interface DocsLayoutProps {
   prev?: Page
   /** Next article. If provided, renders a "label →" button in the footer. */
   next?: Page
+  /**
+   * Base GitHub URL for the edit link.
+   * Combined with `activeKey` to point directly to the .mdx file.
+   * @example "https://github.com/user/repo/blob/main/src/app/docs/content"
+   */
+  editUrl?: string
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -50,13 +56,14 @@ interface DocsLayoutProps {
  *   onSelect={select}
  *   prev={prev && { label: prev.title, key: prev.key }}
  *   next={next && { label: next.title, key: next.key }}
+ *   editUrl="https://github.com/user/repo/blob/main/src/app/docs/content"
  * >
  *   {Content ? <Content /> : <p>Loading...</p>}
  * </DocsLayout>
  */
 export default function DocsLayout({
   children, sections, tocItems,
-  title, activeKey, onSelect, prev, next,
+  title, activeKey, onSelect, prev, next, editUrl,
 }: DocsLayoutProps) {
   return (
     <div className={styles.root}>
@@ -76,14 +83,26 @@ export default function DocsLayout({
                 ← {prev.label}
               </button>
             )}
-            {next && (
-              <button
-                className={`${styles.paginationBtn} ${styles.paginationNext}`}
-                onClick={() => onSelect(next.key)}
-              >
-                {next.label} →
-              </button>
-            )}
+            <div className={styles.paginationRight}>
+              {editUrl && (
+                <a
+                  href={`${editUrl}/${activeKey}.mdx`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.paginationBtn}
+                >
+                  ✎ Edit page
+                </a>
+              )}
+              {next && (
+                <button
+                  className={styles.paginationBtn}
+                  onClick={() => onSelect(next.key)}
+                >
+                  {next.label} →
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </main>

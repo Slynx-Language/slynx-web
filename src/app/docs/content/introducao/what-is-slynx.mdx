@@ -1,0 +1,36 @@
+> Almost everything below isn't complete and just shows the idea of the project on the long run.
+
+## Slynx is a data driven and UI language.
+
+Slynx is a language that focuses on having cross-platform UI support as first-class. 
+The thing is that, for so to be true, and yet things don't get terrible for the maintainers 
+to maintain, the language compiles instead of a code that will run, such as binary or code 
+in another language it instead compiles down to an IR made with the purpose to tell what to do.
+This said, the compilation of the IR is left to the community.
+
+## Why let the community compile the IR so?
+
+Since Slynx is not intended to have in its core all compilation possible, the community is 
+able to select where to compile, so the same code can be used in different specialized compilers, 
+and then work in different platforms.
+
+## What is and why data driven?
+
+Data Oriented Design is a way to manipulate data to make the processor's life easier. 
+Slynx provides tooling to make the usage of DOD not so painful and very straightforward, 
+if compared to other languages. It's not the only way to manipulate data, but it's the preferred 
+way and all the codebase is being written towards it.
+
+## What makes it different from other languages?
+
+What makes Slynx different from other languages is that, as it by itself does not compile down 
+to a runtime, it can work in almost any scenario. Differently from SDLs such as QML which it is 
+inspired on Slynx is intended to have all the features a normal language would have. 
+Think of Slynx as JSX, but able to compile down to any target, and so have any runtime the 
+compiler chooses to use.
+
+## What does it support?
+
+By now it's compiling to JavaScript as a proof of concept that Slynx IR can be compiled down to something runnable.
+
+> Note: This part is still being figured out — IRs are complex territory.
