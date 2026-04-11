@@ -4,8 +4,8 @@ import Link from "next/link"
 import { buttonVariants } from "@/components/ui/button"
 
 const links = [
-  { href: '#', text: 'Docs' },
-  { href: '#', text: 'API Reference' },
+  { href: 'docs', text: 'Docs' },
+  { href: 'reference', text: 'API Reference' },
   { href: '#', text: 'Features' },
   { href: '#', text: 'Use Cases' },
 ]

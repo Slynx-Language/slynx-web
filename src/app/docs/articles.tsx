@@ -3,6 +3,12 @@
 // To add a new article: add an object to DOCS and create the matching .mdx file.
 
 import type { TocItem } from "../../components/docs/DocsTOC"
+import WhatIsIt from "./content/introduction/whatisit.mdx";
+import Installation from "./content/introduction/installation.mdx";
+import FirstSteps from "./content/guides/first-steps.mdx";
+import { ReactNode } from "react";
+
+type Mdx = (props: any) => ReactNode;
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -39,7 +45,8 @@ interface DocArticle {
    * List of TOC entries for this article.
    * Each `id` must match a ## heading id in the corresponding .mdx file.
    */
-  topics: Topic[]
+  topics: Topic[],
+  content: Mdx
 }
 
 // ─── Source ───────────────────────────────────────────────────────────────────
@@ -52,17 +59,18 @@ interface DocArticle {
  */
 const DOCS: DocArticle[] = [
   {
-    key: "introducao/o-que-e",
+    key: "introduction/what-is-it",
     label: "O que é?",
     title: "O que é?",
     section: "Introdução",
     topics: [
       { id: "visao-geral", label: "Visão geral" },
-      { id: "motivacao",   label: "Motivação" },
+      { id: "motivacao", label: "Motivação" },
     ],
+    content: WhatIsIt,
   },
   {
-    key: "introducao/instalacao",
+    key: "introduction/installation",
     label: "Instalação",
     title: "Instalação",
     section: "Introdução",
@@ -70,16 +78,18 @@ const DOCS: DocArticle[] = [
       { id: "requisitos", label: "Requisitos" },
       { id: "instalando", label: "Instalando" },
     ],
+    content: Installation
   },
   {
-    key: "guias/primeiros-passos",
+    key: "guides/first-steps",
     label: "Primeiros passos",
     title: "Primeiros passos",
     section: "Guias",
     topics: [
       { id: "configuracao", label: "Configuração" },
-      { id: "uso-basico",   label: "Uso básico" },
+      { id: "uso-basico", label: "Uso básico" },
     ],
+    content: FirstSteps
   },
 ]
 
@@ -91,10 +101,11 @@ const DOCS: DocArticle[] = [
  *
  * @returns Array of `{ key, title, toc }` objects
  */
-export const ARTICLES = DOCS.map(({ key, title, topics }) => ({
+export const ARTICLES = DOCS.map(({ key, title, topics, content }) => ({
   key,
   title,
   toc: topics as TocItem[],
+  content
 }))
 
 /**
