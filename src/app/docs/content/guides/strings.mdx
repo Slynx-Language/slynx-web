@@ -1,0 +1,25 @@
+# Strings
+
+The `str` type in Slynx is equivalent to Rust's `&'static str` — immutable UTF-8 strings intended only for read-only use.
+
+```slynx
+let hello: str = "hello";
+```
+
+## Characteristics
+
+- **Immutable**: Once created, cannot be modified
+- **UTF-8**: Always valid UTF-8 encoded text
+- **Static lifetime**: Stored for the entire program duration
+
+## Current State
+
+Currently, `str` is a basic type with no features:
+
+- No methods for getting substrings
+- No modification capabilities
+- No comparison operators (`==`, `!=`, `<`) are implemented yet
+
+A mutable string type will be implemented in the future when a standard library is added.
+
+For now, treat `str` as a simple, read-only text type.
