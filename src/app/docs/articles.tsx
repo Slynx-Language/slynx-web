@@ -8,6 +8,7 @@ import Installation from "./content/introduction/installation.mdx";
 import FirstSteps from "./content/guides/first-steps.mdx";
 import Functions from "./content/guides/functions.mdx";
 import Strings from "./content/guides/strings.mdx";
+import NumericTypes from "./content/guides/numeric-types.mdx";
 import { ReactNode } from "react";
 
 type Mdx = (props: any) => ReactNode;
@@ -113,11 +114,22 @@ const DOCS: DocArticle[] = [
     title: "Strings",
     section: "Guides",
     topics: [
-      { id: "configuring", label: "Configuring" },
-      { id: "basic-usage", label: "Basic Usage" },
+      { id: "characteristics", label: "Characteristics" },
+      { id: "current-state", label: "Current State" },
     ],
     content: Strings
-  }
+  },
+  {
+    key: "guides/numeric-types",
+    label: "Numeric Types",
+    title: "Numbers",
+    section: "Guides",
+    topics: [
+      { id: "current", label: "Current Types" },
+      { id: "futures", label: "Future Types" },
+    ],
+    content: NumericTypes
+  },
 ]
 
 // ─── Derived exports ──────────────────────────────────────────────────────────
