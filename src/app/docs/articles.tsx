@@ -60,34 +60,34 @@ interface DocArticle {
 const DOCS: DocArticle[] = [
   {
     key: "introduction/what-is-it",
-    label: "O que é?",
-    title: "O que é?",
-    section: "Introdução",
+    label: "What is it?",
+    title: "What is it?",
+    section: "Introduction",
     topics: [
-      { id: "visao-geral", label: "Visão geral" },
-      { id: "motivacao", label: "Motivação" },
+      { id: "general-vision", label: "General Ideology" },
+      { id: "motivation", label: "Motivation" },
     ],
     content: WhatIsIt,
   },
   {
     key: "introduction/installation",
-    label: "Instalação",
-    title: "Instalação",
-    section: "Introdução",
+    label: "Instalation",
+    title: "Instalation",
+    section: "Introduction",
     topics: [
-      { id: "requisitos", label: "Requisitos" },
-      { id: "instalando", label: "Instalando" },
+      { id: "requisites", label: "Requirements" },
+      { id: "installing", label: "Installing" },
     ],
     content: Installation
   },
   {
     key: "guides/first-steps",
-    label: "Primeiros passos",
-    title: "Primeiros passos",
-    section: "Guias",
+    label: "First Steps",
+    title: "First Steps",
+    section: "Guides",
     topics: [
-      { id: "configuracao", label: "Configuração" },
-      { id: "uso-basico", label: "Uso básico" },
+      { id: "configuring", label: "Configuring" },
+      { id: "basic-usage", label: "Basic Usage" },
     ],
     content: FirstSteps
   },
