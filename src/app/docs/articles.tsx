@@ -6,6 +6,8 @@ import type { TocItem } from "../../components/docs/DocsTOC"
 import WhatIsIt from "./content/introduction/whatisit.mdx";
 import Installation from "./content/introduction/installation.mdx";
 import FirstSteps from "./content/guides/first-steps.mdx";
+import Functions from "./content/guides/functions.mdx";
+import Strings from "./content/guides/strings.mdx";
 import { ReactNode } from "react";
 
 type Mdx = (props: any) => ReactNode;
@@ -91,6 +93,31 @@ const DOCS: DocArticle[] = [
     ],
     content: FirstSteps
   },
+  {
+    key: "guides/functions",
+    label: "Intro To Functions",
+    title: "Functions",
+    section: "Guides",
+    topics: [
+      { id: "variables", label: "Variables" },
+      { id: "conditionals", label: "If Expression" },
+      { id: "while", label: "While" },
+      { id: "func-sign", label: "Function Signatures" },
+      { id: "tuples", label: "Tuples" },
+    ],
+    content: Functions
+  },
+  {
+    key: "guides/strings",
+    label: "Strings",
+    title: "Strings",
+    section: "Guides",
+    topics: [
+      { id: "configuring", label: "Configuring" },
+      { id: "basic-usage", label: "Basic Usage" },
+    ],
+    content: Strings
+  }
 ]
 
 // ─── Derived exports ──────────────────────────────────────────────────────────
