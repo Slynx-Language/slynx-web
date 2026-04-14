@@ -9,6 +9,7 @@ import FirstSteps from "./content/guides/first-steps.mdx";
 import Functions from "./content/guides/functions.mdx";
 import Strings from "./content/guides/strings.mdx";
 import NumericTypes from "./content/guides/numeric-types.mdx";
+import Conditionals from "./content/guides/conditionals.mdx";
 import { ReactNode } from "react";
 
 type Mdx = (props: any) => ReactNode;
@@ -129,6 +130,17 @@ const DOCS: DocArticle[] = [
       { id: "futures", label: "Future Types" },
     ],
     content: NumericTypes
+  },
+  {
+    key: "guides/conditionals",
+    label: "Conditionals",
+    title: "Numbers",
+    section: "Guides",
+    topics: [
+      { id: "current", label: "Current Types" },
+      { id: "futures", label: "Future Types" },
+    ],
+    content: Conditionals
   },
 ]
 

@@ -1,0 +1,108 @@
+# Conditionals
+
+## If Expressions
+
+The `if` expressions executes a block of code based on a condition. Conditions can use logical operators like `&&` (and), `||` (or), and comparison operators like `>`, `<`, `>=`, `<=`, `==`, `!=`.
+
+```slynx
+if abc && 12 > q || a > 12 {
+  // condition is true
+}
+else {
+  // condition is false
+}
+```
+Here the if is being used as a statement, but could be as a expression such as
+```slynx
+let a = if a > b {a} else {b};
+```
+
+
+### Exhaustive Matching
+
+`if` statements must be exhaustive, meaning all possible cases must be handled. You can use `else` to catch all remaining cases, or chain multiple `else if` branches:
+
+```slynx
+let x = 10
+
+if x > 20 {
+  // x is greater than 20
+}
+else if x > 10 {
+  // x is greater than 10 but not greater than 20
+}
+else if x > 5 {
+  // x is greater than 5 but not greater than 10
+}
+else {
+  // x is 5 or less
+}
+```
+
+Without an `else` branch, the compiler will require all possible cases to be handled explicitly.
+This is only FALSE, when the type of the expression is `void`, this is known on the first clause, thus, what's returned inside of the if branch.
+In cases where the if type is `void`, no else, nor exaustiviness is needed. So the following is permitted:
+```slynx
+let a = if a > b {
+  f(); //since its got an ';' doesn't return
+}; //typeof a == void
+```
+
+## While Statements
+
+The `while` statement repeats a block of code while a condition is true. The condition is evaluated before each iteration.
+
+```slynx
+while condition {
+  // code to repeat
+}
+```
+
+The condition uses the same syntax as `if` statements:
+
+```slynx
+let counter = 0
+
+while counter < 5 {
+  counter = counter + 1
+}
+```
+
+### Break and Continue
+
+You can use `break` to exit the loop early and `continue` to skip to the next iteration:
+
+```slynx
+let i = 0
+
+while i < 10 {
+  i += 1;
+  
+  if i == 3 {
+    continue; // skips the rest of this iteration(not implemented)
+  }
+  
+  if i == 7 {
+    break; // exits the loop entirely(not implemented)
+  }
+}
+```
+
+### Return in Loops
+
+You can also use `return` inside a `while` loop to exit both the loop and the enclosing function:
+
+```slynx
+func findFirstPositive(numbers: int32[]): int32 {
+  let mut i = 0
+  
+  while i < numbers.len() { //not implemented
+    if numbers[i] > 0 {
+      return numbers[i];
+    }
+    i += 1;
+  }
+  
+  return -1;
+}
+```
