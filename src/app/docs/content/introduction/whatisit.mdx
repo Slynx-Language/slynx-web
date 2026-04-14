@@ -1,0 +1,54 @@
+# What is Slynx?
+
+Slynx is a general-purpose programming language designed to be **legible**, **fast**, **cross-platform**, and **complete**. The main goal is to provide a development experience that combines the ease of use of high-level languages with the performance and control of systems programming, eliminating the compromises developers often have to make.
+
+## Project Pillars
+
+### Legibility
+
+The language prioritizes clear and comprehensible code. The syntax is designed to be intuitive, reducing the cognitive load needed to understand and maintain code. Each construct should be self-explanatory — not oversimplified, but unambiguous.
+
+### Speed
+
+Performance is a fundamental requirement, not an afterthought. The language is idealized to do all the heavy work during compilation, so the compilation process might be slow — but the runtime execution should be as fast as possible. This approach shifts complexity from runtime to compile time, generating optimized code that runs efficiently with minimal overhead.
+
+### Paradigm
+
+Slynx is not Object Oriented — it is **Data Oriented**, following **Data-Oriented Design (DOD)** principles. The language is designed around how data is laid out and processed, rather than around objects and inheritance hierarchies. While it is possible to use an OOP-style approach, the main support and optimization is intended for DOD in the long run, prioritizing data layout and cache efficiency over abstraction.
+
+### Cross-Platform
+
+Native support for major platforms — Windows, macOS, Linux, Web, iOS, and Android. The same code works consistently across all environments without modifications or additional tooling.
+
+### UI Built-in
+
+The main innovation is native integration of graphical interface tools. No external libraries or frameworks are needed to create visual interfaces — the UI system is directly in the toolchain.
+
+### Completeness
+
+The language provides everything needed for professional development:
+
+- Systems programming
+- Web and mobile applications
+- Scripts and automation
+- Graphical interfaces
+- Everything other languages enable
+
+## Compiler Architecture
+
+Slynx does not compile directly to a specific target. Instead, the language compiles to an optimized IR (Intermediate Representation), and specialized compilers transform that IR to the desired destination — whether WebAssembly, native code, or any other target.
+
+This approach allows the same base language to generate optimized code for different platforms, maintaining compatibility and flexibility without compromising performance.
+
+## Project Status
+
+**This project is very immature.**
+
+Many of the pillars described above are idealized — they represent the project's goals and vision, not what is currently implemented. Specifically:
+
+- **Cross-platform**: Not implemented. The language currently has no target output.
+- **Performance**: Not implemented. While the vision is fast execution, there is no optimization pipeline in place yet.
+- **UI Built-in**: Not implemented. This is a long-term goal, not current functionality.
+- **Completeness**: Partial. Basic language features exist, but many capabilities are missing.
+
+Slynx is an ambitious project in its early stages. The concepts described here are the direction we're heading, not the current state.

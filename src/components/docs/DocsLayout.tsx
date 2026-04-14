@@ -1,3 +1,4 @@
+"use client";
 // src/app/components/docs/DocsLayout.tsx
 import DocsSidebar, { NavSection } from "./DocsSideBar"
 import DocsTOC, { TocItem } from "./DocsTOC"

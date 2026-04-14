@@ -3,6 +3,17 @@
 // To add a new article: add an object to DOCS and create the matching .mdx file.
 
 import type { TocItem } from "../../components/docs/DocsTOC"
+import WhatIsIt from "./content/introduction/whatisit.mdx";
+import Installation from "./content/introduction/installation.mdx";
+import FirstSteps from "./content/guides/first-steps.mdx";
+import Functions from "./content/guides/functions.mdx";
+import Strings from "./content/guides/strings.mdx";
+import NumericTypes from "./content/guides/numeric-types.mdx";
+import Conditionals from "./content/guides/conditionals.mdx";
+import SpecializedComponents from "./content/guides/specialized-components.mdx";
+import { ReactNode } from "react";
+
+type Mdx = (props: any) => ReactNode;
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -39,7 +50,8 @@ interface DocArticle {
    * List of TOC entries for this article.
    * Each `id` must match a ## heading id in the corresponding .mdx file.
    */
-  topics: Topic[]
+  topics: Topic[],
+  content: Mdx
 }
 
 // ─── Source ───────────────────────────────────────────────────────────────────
@@ -52,34 +64,96 @@ interface DocArticle {
  */
 const DOCS: DocArticle[] = [
   {
-    key: "introducao/o-que-e",
-    label: "O que é?",
-    title: "O que é?",
-    section: "Introdução",
+    key: "introduction/what-is-it",
+    label: "What is it?",
+    title: "What is it?",
+    section: "Introduction",
     topics: [
-      { id: "visao-geral", label: "Visão geral" },
-      { id: "motivacao",   label: "Motivação" },
+      { id: "general-vision", label: "General Ideology" },
+      { id: "motivation", label: "Motivation" },
     ],
+    content: WhatIsIt,
   },
   {
-    key: "introducao/instalacao",
-    label: "Instalação",
-    title: "Instalação",
-    section: "Introdução",
+    key: "introduction/installation",
+    label: "Instalation",
+    title: "Instalation",
+    section: "Introduction",
     topics: [
-      { id: "requisitos", label: "Requisitos" },
-      { id: "instalando", label: "Instalando" },
+      { id: "requisites", label: "Requirements" },
+      { id: "installing", label: "Installing" },
     ],
+    content: Installation
   },
   {
-    key: "guias/primeiros-passos",
-    label: "Primeiros passos",
-    title: "Primeiros passos",
-    section: "Guias",
+    key: "guides/first-steps",
+    label: "First Steps",
+    title: "First Steps",
+    section: "Guides",
     topics: [
-      { id: "configuracao", label: "Configuração" },
-      { id: "uso-basico",   label: "Uso básico" },
+      { id: "configuring", label: "Configuring" },
+      { id: "basic-usage", label: "Basic Usage" },
     ],
+    content: FirstSteps
+  },
+  {
+    key: "guides/functions",
+    label: "Intro To Functions",
+    title: "Functions",
+    section: "Guides",
+    topics: [
+      { id: "variables", label: "Variables" },
+      { id: "conditionals", label: "If Expression" },
+      { id: "while", label: "While" },
+      { id: "func-sign", label: "Function Signatures" },
+      { id: "tuples", label: "Tuples" },
+    ],
+    content: Functions
+  },
+  {
+    key: "guides/strings",
+    label: "Strings",
+    title: "Strings",
+    section: "Guides",
+    topics: [
+      { id: "characteristics", label: "Characteristics" },
+      { id: "current-state", label: "Current State" },
+    ],
+    content: Strings
+  },
+  {
+    key: "guides/numeric-types",
+    label: "Numeric Types",
+    title: "Numbers",
+    section: "Guides",
+    topics: [
+      { id: "current", label: "Current Types" },
+      { id: "futures", label: "Future Types" },
+    ],
+    content: NumericTypes
+  },
+  {
+    key: "guides/conditionals",
+    label: "Conditionals",
+    title: "Numbers",
+    section: "Guides",
+    topics: [
+      { id: "if", label: "If Expression" },
+      { id: "exaustiviness", label: "Exaustiviness" },
+      { id: "while", label: "While" },
+    ],
+    content: Conditionals
+  },
+  {
+    key: "guides/specialized-components",
+    label: "Specialized Components",
+    title: "Specialized Components",
+    section: "Guides",
+    topics: [
+      { id: "text", label: "Text" },
+      { id: "div", label: "Div" },
+    ],
+    content: SpecializedComponents
   },
 ]
 
@@ -91,10 +165,11 @@ const DOCS: DocArticle[] = [
  *
  * @returns Array of `{ key, title, toc }` objects
  */
-export const ARTICLES = DOCS.map(({ key, title, topics }) => ({
+export const ARTICLES = DOCS.map(({ key, title, topics, content }) => ({
   key,
   title,
   toc: topics as TocItem[],
+  content
 }))
 
 /**

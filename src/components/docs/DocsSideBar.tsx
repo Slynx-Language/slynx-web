@@ -1,6 +1,5 @@
+"use client";
 // src/app/components/docs/DocsSidebar.tsx
-"use client"
-
 import styles from "./DocsSideBar.module.css"
 
 // ─── Types ────────────────────────────────────────────────────────────────────

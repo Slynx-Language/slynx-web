@@ -1,23 +1,17 @@
 'use client'
 
-import { useTheme } from "@/app/theme/provider"
+import { useTheme } from "next-themes"
 import Icon from "../icon"
 import styles from "../header/header.module.css"
 
-/**
- * The Sun/Moon button used in the Header to switch themes.
- */
 export default function ThemeToggle() {
-    const { theme, toggleTheme } = useTheme()
-
-    // Wait for theme detection to avoid flickering on first load
-    if (theme === undefined) return <div style={{ width: 32, height: 32 }} />
+    const { setTheme, resolvedTheme } = useTheme()
 
     return (
         <button
             type="button"
             className={styles.iconBtn}
-            onClick={toggleTheme}
+            onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
             aria-label="Toggle theme"
             style={{
                 display: 'flex',
@@ -29,7 +23,7 @@ export default function ThemeToggle() {
             }}
         >
             <Icon
-                icon={theme === 'dark' ? "material-symbols:light-mode-rounded" : "material-symbols:dark-mode-rounded"}
+                icon={resolvedTheme === 'dark' ? "material-symbols:light-mode-rounded" : "material-symbols:dark-mode-rounded"}
                 height={24}
             />
         </button>

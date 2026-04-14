@@ -1,0 +1,12 @@
+# Installation
+
+To get started, simply clone the codebase from GitHub:
+
+```
+git clone https://github.com/Slynx-Language/slynx
+```
+
+Currently, there is no way to use Slynx properly other than writing tests in Rust. The language exists only as a frontend library that compiles to IR. To use it, import the library in a Rust project via git, and build your own compiler on top of the IR it provides.
+
+As a proof of concept, a JavaScript compiler is being written with name of [slynx-to-js](https://github.com/Slynx-Language/slynx-to-js). It currently not fully implemented, and must be rewritten to support the IR specification.
+So in the future it might be ready to use.

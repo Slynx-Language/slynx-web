@@ -1,0 +1,89 @@
+# First Steps
+
+This guide covers the basics of Slynx syntax, starting with functions and components.
+
+## Functions
+
+Functions in Slynx can be written in multiple styles:
+
+### Inline (single expression)
+
+```slynx
+func add(a: int, b: int): int -> a + b;
+```
+
+### Block (with implicit return)
+
+```slynx
+func sub(a: int, b: int): int {
+  a - b
+}
+```
+
+### Block (with explicit return)
+
+```slynx
+func mul(a: int, b: int): int {
+  return a * b;
+}
+```
+
+Key points:
+
+ * `func` keyword declares a function
+
+ * Parameters have explicit types (`name: type`)
+
+ * Return type is specified after parameters (`: int`)
+
+ * `->` indicates an inline expression (implicit return)
+
+ * Block syntax uses `{ }` and can use explicit `return`
+
+ * The semicolon `;` terminates inline functions
+
+## Components
+
+Components define UI elements — similar to a class definition in OOP languages. They describe what an instance will have, but don't create anything by themselves.
+
+### Basic syntax
+
+```slynx
+component Counter {
+  pub prop value: int;
+  Text { text: value }
+}
+```
+
+This is similar to `public class Counter` in Java. It defines the structure of a Counter component:
+
+ * `pub prop value: int` — a public reactive property
+
+ * `Text { text: value }` — a child element that displays the value
+
+ * By default, everything inside a component is **private** and **immutable** except props
+
+ * A `prop` is a reactive value — when changed, it updates all dependencies
+
+
+### With default value
+
+```slynx
+component Counter {
+  pub prop value = 0;
+}
+```
+
+This provides a fallback value. If the prop is not public when creating the component, this default is used.
+
+### Creating components
+
+```slynx
+Counter {
+  value: 3,
+}
+```
+
+- `value: 3` is possible because `value` is marked as `pub`
+- If the prop wasn't public, this would cause an error
+- If a prop has a default value and is not required, it's optional — omitting it uses the default

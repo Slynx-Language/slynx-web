@@ -1,8 +1,8 @@
-import CapabilitiesStyles from "./lang-capabilities.module.css";
+import CapabilitiesStyles from "./lang-capabilities.module.css"
 
 export interface CapabilityContent {
-  title: string;
-  description: string;
+  title: string
+  description: string
 }
 
 export interface CapabilityProp extends CapabilityContent {
@@ -17,19 +17,21 @@ export interface CapabilitiesProps {
 }
 
 function range(start: number, end: number): number[] {
-  return Array.from({ length: end - start }, (_, i) => start + i);
+  return Array.from({ length: end - start }, (_, i) => start + i)
 }
 
 function Capability(capability: CapabilityProp) {
-  return <div className={CapabilitiesStyles.capability}>
-    <div>
-      <h1>{capability.title}</h1>
-      <p>{capability.description}</p>
+  return (
+    <div className={CapabilitiesStyles.capability}>
+      <div>
+        <h1>{capability.title}</h1>
+        <p>{capability.description}</p>
+      </div>
+      <div key={capability.title} className={CapabilitiesStyles.traces}>{
+        range(0, capability.quantity!).map((v, i) => <div key={i} className={v === capability.index ? CapabilitiesStyles.current_capability_trace : CapabilitiesStyles.capability_trace}></div>)
+      }</div>
     </div>
-    <div className={CapabilitiesStyles.traces}>{
-      range(0, capability.quantity!).map(v => <div className={v === capability.index ? CapabilitiesStyles.current_capability_trace : CapabilitiesStyles.capability_trace}></div>)
-    }</div>
-  </div>
+  )
 }
 
 export function LangCapabilities(props: CapabilitiesProps) {
@@ -37,7 +39,7 @@ export function LangCapabilities(props: CapabilitiesProps) {
     <h1 className={CapabilitiesStyles.title}>{props.title} <span className={CapabilitiesStyles.enphasized}>{props.emphasized_text}</span>?</h1>
     <div className={CapabilitiesStyles.container}>
       {props.capabilities.map(
-        (p, i) => Capability({ ...p, index: i, quantity: props.capabilities.length })
+        (p, i) => <Capability key={p.title} index={i} quantity={props.capabilities.length} title={p.title} description={p.description} />
       )}
     </div>
   </ div>
