@@ -10,6 +10,7 @@ import Functions from "./content/guides/functions.mdx";
 import Strings from "./content/guides/strings.mdx";
 import NumericTypes from "./content/guides/numeric-types.mdx";
 import Conditionals from "./content/guides/conditionals.mdx";
+import SpecializedComponents from "./content/guides/specialized-components.mdx";
 import { ReactNode } from "react";
 
 type Mdx = (props: any) => ReactNode;
@@ -137,10 +138,22 @@ const DOCS: DocArticle[] = [
     title: "Numbers",
     section: "Guides",
     topics: [
-      { id: "current", label: "Current Types" },
-      { id: "futures", label: "Future Types" },
+      { id: "if", label: "If Expression" },
+      { id: "exaustiviness", label: "Exaustiviness" },
+      { id: "while", label: "While" },
     ],
     content: Conditionals
+  },
+  {
+    key: "guides/specialized-components",
+    label: "Specialized Components",
+    title: "Specialized Components",
+    section: "Guides",
+    topics: [
+      { id: "text", label: "Text" },
+      { id: "div", label: "Div" },
+    ],
+    content: SpecializedComponents
   },
 ]
 
