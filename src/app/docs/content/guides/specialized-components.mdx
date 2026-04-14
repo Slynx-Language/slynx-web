@@ -1,0 +1,34 @@
+# Specialized Components
+
+This guide covers the specialized components available in Slynx. Currently, only two specialized components exist: Div and Text. This limitation is intentional — it's a proof of concept to validate the core ideas before expanding the component library.
+
+The main idea is that specialized components are builtin components that exist on any target slynx compiles to via specific compilers. So its certain that
+the given ones exist when compiled.
+
+If they do not, this should NOT be considered a slynx problem, since it's idealized for the backend of that compiles it, does handle it.
+
+## Text
+
+The Text component renders text content.
+
+```slynx
+Text {
+  text: "texto qualquer"
+}
+```
+
+The `text` prop accepts a string value to display.
+
+## Div
+
+The Div component is a container that can hold other components.
+
+```slynx
+Div {
+  Component{}
+  Text {text: "Text Inside Div"}
+  AnotherComponent {}
+}
+```
+
+Div components can nest other components within their block to create hierarchical UI structures.
