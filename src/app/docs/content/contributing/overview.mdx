@@ -1,0 +1,50 @@
+# Contributing
+
+Slynx is an experimental project and contributions are welcome. The best place to start is understanding [how the pipeline works](contributing/pipeline) before touching code.
+
+## Where to Contribute
+
+- **`frontend/`** — lexer, parser, HIR, type checker. Most language feature work happens here.
+- **`middleend/`** — IR design, lowering, and IR-level tests.
+- **`slynx-to-js`** — the JavaScript backend compiler.
+- **Documentation** — keeping docs aligned with the current codebase.
+- **Tests** — regression coverage for parser, checker, and middleend behavior.
+
+## Setup
+
+```bash
+git clone https://github.com/Slynx-Language/slynx.git
+cd slynx
+cargo build
+```
+
+## Validation
+
+Run this before opening a PR:
+
+```bash
+cargo test
+cargo fmt --all -- --check
+cargo clippy --all-targets --all-features -- -D warnings
+```
+
+For changes scoped to one crate:
+
+```bash
+cargo test -p frontend
+cargo test -p middleend
+```
+
+## Workflow
+
+1. Fork the repository and create a focused branch.
+2. For larger language or IR changes, open a GitHub issue or discussion first to align on direction before writing code.
+3. Keep PRs small and reviewable.
+4. Update docs when behavior changes.
+5. Fill out the pull request template.
+
+## Community
+
+- [GitHub Issues](https://github.com/Slynx-Language/slynx/issues)
+- [GitHub Discussions](https://github.com/Slynx-Language/slynx/discussions)
+- [Discord](https://discord.gg/B4pHKHqNxG)

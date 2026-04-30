@@ -70,39 +70,38 @@ while counter < 5 {
 
 ### Break and Continue
 
-You can use `break` to exit the loop early and `continue` to skip to the next iteration:
+You can use `break` to exit the loop early and `continue` to skip to the next iteration. These are not yet implemented:
 
 ```slynx
-let i = 0
+let mut i = 0;
 
 while i < 10 {
-  i += 1;
-  
+  i = i + 1;
+
   if i == 3 {
-    continue; // skips the rest of this iteration(not implemented)
+    continue; // not implemented
   }
-  
+
   if i == 7 {
-    break; // exits the loop entirely(not implemented)
+    break; // not implemented
   }
 }
 ```
 
 ### Return in Loops
 
-You can also use `return` inside a `while` loop to exit both the loop and the enclosing function:
+You can use `return` inside a `while` loop to exit both the loop and the enclosing function:
 
 ```slynx
-func findFirstPositive(numbers: int32[]): int32 {
-  let mut i = 0
-  
-  while i < numbers.len() { //not implemented
-    if numbers[i] > 0 {
-      return numbers[i];
+func findFirst(value: int, a: int, b: int): int {
+  let mut i = 0;
+
+  while i < 10 {
+    if i == value {
+      return i;
     }
-    i += 1;
+    i = i + 1;
   }
-  
+
   return -1;
 }
-```

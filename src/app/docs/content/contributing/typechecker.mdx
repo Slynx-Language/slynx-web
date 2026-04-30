@@ -1,0 +1,46 @@
+# Type Checker and Monomorphizer
+
+These two phases run after HIR generation and operate directly on the HIR — they mutate it in-place rather than producing a new data structure.
+
+## Type Checker
+
+The type checker (`frontend/src/checker/`) takes the `SlynxHir` produced by the HIR phase and resolves all `HirType::Infer` placeholders into concrete types.
+
+### In-place mutation
+
+The type checker does not build a new representation. It walks the existing HIR and writes concrete `HirType` values back into the `TypesModule` wherever an `Infer` was left. By the time the type checker finishes, every expression and declaration in the HIR has a fully resolved type.
+
+### Two phases
+
+**Phase 1 — Resolution** (`resolve_*` functions): walks all declarations, expressions, and statements and tries to infer types from context. For example:
+- A `let x = 5` with no annotation gets `x: int` from the literal.
+- A function call gets the return type of the callee.
+- A field access gets the type of that field from the object layout.
+
+**Phase 2 — Defaults** (`set_default` / `default_*` functions): after the first pass, any `Infer` that still couldn't be resolved gets assigned a language default. This handles cases where the type is genuinely ambiguous and a reasonable fallback exists.
+
+### `HirType::Reference` and how aliases work
+
+`Reference { rf: TypeId }` is the HIR's way of saying "this type is a name that points to another type". It is used for:
+
+- **Objects**: `object Person { ... }` creates a `Struct` type for the layout, and a `Reference` named `Person` that points to it. Code that uses `Person` as a type goes through the reference.
+- **Aliases**: `alias A = B` creates a `Reference` named `A` whose `rf` points to the `TypeId` of `B`. If `B` is itself a `Reference`, you get a chain: `A → B → concrete type`.
+- **Components**: same pattern as objects.
+
+The type checker follows `Reference` chains when it needs the concrete layout (e.g. to validate field access or check struct construction). It never collapses the chain itself — that is the monomorphizer's job.
+
+---
+
+## Monomorphizer
+
+The monomorphizer (`frontend/src/monomorphizer/`) runs after the type checker and collapses `Reference` chains so that every `Reference` points directly to its concrete type, with no intermediate hops.
+
+### What it does
+
+Given a chain like `A → B → Struct { ... }`, the monomorphizer rewrites `A`'s `rf` to point directly to the `Struct`, skipping `B`. After this pass, no `Reference` points to another `Reference` — every reference resolves in one step.
+
+It also detects and rejects **cyclic aliases** (`alias A = B; alias B = A;`), which would produce an infinite reference chain. This emits a `RecursiveType` error.
+
+### Future: generics
+
+Currently the monomorphizer only handles reference flattening. In the future it will also be responsible for **generic specialization** — when a generic type like `Container<int>` is used, the monomorphizer will produce a concrete specialized version of that type and rewrite all references to it. This is why the phase is called "monomorphizer": it turns polymorphic types into concrete monomorphic ones.
