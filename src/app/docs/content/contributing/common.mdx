@@ -1,0 +1,56 @@
+# The `common` Crate
+
+The `common` crate is the shared foundation of the Slynx compiler. It defines the data structures that every other crate — `frontend`, `middleend`, and backends — depends on. It has no knowledge of parsing, type checking, or IR generation; it only defines the shapes.
+
+## What's Inside
+
+### AST Types (`ast/`)
+
+The raw output of the parser. The AST represents the source code structure before any analysis.
+
+Key types:
+
+- **`ASTDeclaration`** — a top-level declaration: `func`, `object`, `component`, or `alias`.
+- **`ASTStatement`** — a statement inside a function body: `let`, `let mut`, assignment, `while`, or an expression statement.
+- **`ASTExpression`** — any expression: literals, identifiers, binary ops, function calls, field access, `if`, tuples, object/component construction.
+- **`Operator`** — the set of binary operators: arithmetic (`+`, `-`, `*`, `/`), comparison (`==`, `!=`, `<`, etc.), logical (`&&`, `||`), and bitwise (`&`, `|`, `^`, `<<`, `>>`).
+- **`Span`** — a `{ start: usize, end: usize }` pair that records where in the source a node came from. Used for error reporting throughout the pipeline.
+- **`GenericIdentifier`** — an identifier that may carry generic parameters, e.g. `Component<int>`. Used for type annotations and declaration names.
+- **`TypedName`** — a `name: Type` pair, used for function parameters and object fields.
+- **`VisibilityModifier`** — `Public`, `Private`, `ChildrenPublic`, or `ParentPublic`. Controls prop visibility in components.
+
+### Symbols (`symbols.rs`)
+
+The symbols module handles **string interning** — a technique to avoid allocating the same string multiple times on the heap.
+
+#### `InternalizedString`
+
+A flat `Vec<u8>` that stores all interned strings back-to-back in a single allocation:
+
+```
+[ h e l l o w o r l d f o o ]
+  ^--- "hello"  ^--- "world" ^--- "foo"
+```
+
+Inserting a string appends its bytes and returns a pointer to where it starts.
+
+#### `SymbolPointer`
+
+A compact `usize` that encodes both the **position** and the **length** of a string inside the `InternalizedString`:
+
+- upper 48 bits → byte offset in the buffer
+- lower 16 bits → length in bytes (max string length: 65535 bytes)
+
+This means a `SymbolPointer` is just a number — cheap to copy, compare, and store anywhere in the HIR or IR without touching the heap.
+
+#### `SymbolsModule`
+
+The public API for interning. It wraps an `InternalizedString` and an [Adaptive Radix Tree](https://db.in.tum.de/~leis/papers/ART.pdf) that maps `&str → SymbolPointer`.
+
+Key methods:
+
+- **`intern(s)`** — if `s` was already interned, returns the existing pointer. Otherwise inserts it and returns a new one. This guarantees that the same string always maps to the same pointer, so pointer equality implies string equality.
+- **`retrieve(s)`** — looks up a string without inserting it.
+- **`get_name(ptr)`** — resolves a `SymbolPointer` back to a `&str`.
+
+The `SymbolsModule` is used by the HIR phase to intern all identifiers (variable names, type names, function names) so the rest of the pipeline works with cheap integer handles instead of heap-allocated strings.

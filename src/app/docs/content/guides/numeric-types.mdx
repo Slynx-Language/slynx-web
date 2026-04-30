@@ -43,3 +43,49 @@ Current fallbacks:
 
 - `isize` → `int64`
 - `usize` → `uint64`
+
+## Numeric Literals
+
+### Decimal
+
+The default base. Just write the number as-is:
+
+```slynx
+let x = 42;
+let f = 3.14;
+```
+
+### Hexadecimal
+
+Prefix with `0x` (case-insensitive):
+
+```slynx
+let a = 0x2A;   // 42
+let b = 0x2b;   // 43
+```
+
+### Binary
+
+Prefix with `0b`:
+
+```slynx
+let flags = 0b1010; // 10
+```
+
+### Octal
+
+Prefix with `0o`:
+
+```slynx
+let perms = 0o071; // 57
+```
+
+### Digit Separators
+
+You can use `_` anywhere inside a numeric literal to improve readability. The compiler ignores them.
+
+```slynx
+let million = 1_000_000;
+let mask    = 0b1111_0000;
+let big_hex = 0xFF_AA_BB;
+```

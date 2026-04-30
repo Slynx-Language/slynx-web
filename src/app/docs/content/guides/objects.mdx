@@ -1,0 +1,88 @@
+# Objects
+
+Objects in Slynx are named data structures — a way to group related fields under a single type. They follow a Data-Oriented Design approach: no methods, no inheritance, just data.
+
+```slynx
+object Person {
+    name: str,
+    age: int,
+}
+```
+
+## Declaring an Object
+
+Use the `object` keyword followed by a name and a list of typed fields separated by commas:
+
+```slynx
+object Point {
+    x: float,
+    y: float,
+}
+```
+
+## Creating an Instance
+
+Object instances are created using the object name followed by named arguments in parentheses:
+
+```slynx
+let p = Point(x: 1.0, y: 2.5);
+```
+
+All fields must be provided — there are no default values.
+
+## Accessing Fields
+
+Fields are accessed with dot syntax:
+
+```slynx
+let age = person.age;
+```
+
+## Mutating Fields
+
+To mutate a field, the variable holding the object must be declared with `let mut`:
+
+```slynx
+let mut person = Person(name: "John", age: 10);
+person.age = 55;
+```
+
+You can also reassign the entire object:
+
+```slynx
+person = Person(name: "Maria", age: person.age);
+```
+
+## Using Objects in Functions
+
+Objects can be passed as arguments and returned from functions:
+
+```slynx
+object Person {
+    name: str,
+    age: int,
+}
+
+func makePerson(name: str, age: int): Person {
+    Person(name: name, age: age)
+}
+
+func main(): int {
+    let p = make_person("Jorge", 30);
+    p.age
+}
+```
+
+## Aliases
+
+You can create an alias for an object type using the `alias` keyword:
+
+```slynx
+alias PersonRef = Person;
+
+func greet(p: PersonRef): str {
+    p.name
+}
+```
+
+Aliases are purely a type-level construct — `PersonRef` and `Person` are interchangeable.

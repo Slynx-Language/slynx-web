@@ -1,0 +1,86 @@
+# Lexer and Parser
+
+These are the first two phases of the Slynx frontend. At this stage there is no string interning — identifiers and string literals are plain heap-allocated `String` values. Interning happens later, during HIR lowering.
+
+## Lexer
+
+The lexer (`frontend/src/lexer/`) takes a raw `&str` and produces a `TokenStream`: a `VecDeque<Token>` ready to be consumed by the parser.
+
+### How it works
+
+The lexer is a single-pass character iterator. It walks the source byte by byte and emits one `Token` per recognized construct. Each `Token` carries:
+
+- a `TokenKind` — what the token is (keyword, operator, literal, identifier, etc.)
+- a `Span` — the `{ start, end }` byte offsets in the source, used for error reporting.
+
+There is no separate tokenization step or regex engine — every rule is a direct `match` on the current character.
+
+### What it handles
+
+**Operators and punctuation** — single and multi-character. The lexer peeks one character ahead to disambiguate:
+- `&` vs `&&`, `|` vs `||`
+- `<` vs `<=` vs `<<`, `>` vs `>=` vs `>>`
+- `=` vs `==`, `+` vs `+=`, `-` vs `-=` vs `->`, etc.
+
+**Comments** — consumed and discarded entirely, never emitted as tokens:
+- `//` — skips to end of line.
+- `/* */` — skips everything until the closing `*/`, tracking newlines along the way.
+
+**String literals** — everything between `"..."`, with basic escape sequences (`\n`, `\t`, `\r`, `\\`, `\"`). Stored as a `String` inside `TokenKind::String`.
+
+**Numeric literals** — the lexer handles four bases and the `_` separator:
+- Decimal: plain digits, optional `.` for floats.
+- Hex (`0x`), binary (`0b`), octal (`0o`): consumed and converted to `i32` immediately.
+- `_` separators are stripped before parsing. Adjacent `_` or `_` next to `.` are rejected as `LexerError::MalformedNumber`.
+- All numeric tokens are emitted as already-parsed `i32` or `f32` values — not as strings.
+
+**Identifiers and keywords** — any sequence starting with a letter or `_`. After collecting the full word, the lexer checks if it's a keyword (`func`, `let`, `mut`, `if`, `else`, `while`, `true`, `false`, `object`, `component`, `pub`, `prop`, `alias`) and emits the corresponding `TokenKind`. Everything else becomes `TokenKind::Identifier(String)`.
+
+### `TokenStream`
+
+The output is a `TokenStream` wrapping a `VecDeque<Token>`. The parser consumes it front-to-back via `next()`. The stream also carries a `new_lines: Vec<usize>` with the byte positions of every newline, used for line/column error reporting.
+
+---
+
+## Parser
+
+The parser (`frontend/src/parser/`) takes a `TokenStream` and produces a `Vec<ASTDeclaration>` — the raw AST of the file.
+
+### How it works
+
+The parser is a hand-written recursive descent parser. It maintains a `Parser` struct with:
+
+- `stream` — the `TokenStream` being consumed.
+- `flags` — a `ParserFlags` enum, currently used to track whether a semicolon is required at the end of the current parse (`RequireSemicolon` vs `None`).
+- `component_expr_enabled` — a boolean that disables component expression parsing in contexts where `{` would be ambiguous (e.g. inside an `if` condition).
+
+The three core methods are:
+
+- **`eat()`** — consumes and returns the next token, or errors on end of input.
+- **`peek()`** / **`peek_at(n)`** — looks ahead without consuming.
+- **`expect(kind)`** — consumes the next token and errors if it doesn't match the expected kind.
+
+### Top-level parsing
+
+`parse_declarations()` is the entry point. It loops over the token stream and dispatches on the first token of each declaration:
+
+| Token | Calls |
+|-------|-------|
+| `alias` | `parse_alias()` |
+| `object` | `parse_object()` |
+| `component` | `parse_component()` |
+| `func` | `parse_func()` |
+| anything else | error |
+
+### What each sub-parser produces
+
+- **`parse_func`** — parses `func name(args): ReturnType { body }` or `func name(args): ReturnType -> expr;`. Produces `ASTDeclarationKind::FuncDeclaration`.
+- **`parse_object`** — parses `object Name { field: Type, ... }`. Produces `ASTDeclarationKind::ObjectDeclaration`.
+- **`parse_component`** — parses `component Name { members }` where members are props and nested component expressions. Produces `ASTDeclarationKind::ComponentDeclaration`.
+- **`parse_alias`** — parses `alias Name = Target;`. Produces `ASTDeclarationKind::Alias`.
+- **`parse_statement`** — dispatches on `let`, `while`, or falls through to expression/assignment.
+- **`parse_expression`** — recursive descent through the operator precedence hierarchy: logical → comparison → additive → multiplicative → primary.
+
+### No string interning here
+
+At this stage, every identifier is a plain `String`. The `GenericIdentifier` and `TypedName` types from `common` hold owned `String` values. Interning into `SymbolPointer` happens in the HIR phase, when the compiler builds its name resolution tables.

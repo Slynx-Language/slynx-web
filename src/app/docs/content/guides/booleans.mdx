@@ -1,0 +1,55 @@
+# Booleans
+
+The `bool` type represents a truth value. It has two literals: `true` and `false`.
+
+```slynx
+let isReady: bool = true;
+let isDone = false;
+```
+
+## Boolean Operators
+
+| Operator | Meaning |
+|----------|---------|
+| `&&`     | and     |
+| `\|\|`   | or      |
+
+```slynx
+func canProceed(isReady: bool, hasPermission: bool): bool {
+    isReady && hasPermission
+}
+```
+
+## Comparison Operators
+
+Comparison expressions evaluate to `bool`:
+
+| Operator | Meaning               |
+|----------|-----------------------|
+| `==`     | equal                 |
+| `!=`     | not equal             |
+| `<`      | less than             |
+| `>`      | greater than          |
+| `<=`     | less than or equal    |
+| `>=`     | greater than or equal |
+
+```slynx
+func isAdult(age: int): bool -> age >= 18;
+```
+
+## Using Booleans in Conditions
+
+`bool` is the required type for `if` and `while` conditions:
+
+```slynx
+func main(): int {
+    let b = true;
+    let result = if b { 1 } else { 0 };
+    result
+}
+```
+
+## Notes
+
+- Unary `!` (not) is not yet implemented.
+- There is no implicit conversion from `int` to `bool`.

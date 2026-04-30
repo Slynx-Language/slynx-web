@@ -1,0 +1,94 @@
+# Components
+
+Components are the building blocks of UI in Slynx. They are declared with the `component` keyword and describe a piece of the interface.
+
+```slynx
+component Greeting {
+    Text { text: "Hello!" }
+}
+```
+
+## Props
+
+Everything inside a component is **private** by default. There are two kinds of prop declarations:
+
+### `prop` (private)
+
+Private props are internal to the component. They cannot be set from outside, so they **must** have a default value:
+
+```slynx
+component Counter {
+    prop count = 0;  // private, default required
+}
+```
+
+### `pub prop` (public)
+
+Public props are set by the parent. They are accessible from outside the component.
+
+If you declare a type without a default, the parent **must** provide the value:
+
+```slynx
+component Button {
+    pub prop label: str;  // type required, no default — parent must provide
+}
+```
+
+If you provide a default value, the type is inferred and the parent may omit it:
+
+```slynx
+component Counter {
+    pub prop count = 0;  // inferred as int, parent can omit it
+}
+```
+
+Props are reactive — when a prop changes, everything that depends on it updates automatically.
+
+## Instantiating a Component
+
+Use the component name followed by `{}` and pass props as key-value pairs:
+
+```slynx
+func main(): Component {
+    Counter { count: 10 }
+}
+```
+
+If a prop has a default value, you can omit it:
+
+```slynx
+func main(): Component {
+    Counter {}  // count defaults to 0
+}
+```
+
+## Composing Components
+
+Components can nest other components in their body:
+
+```slynx
+component Header {
+    Div {
+        Text { text: "My App" }
+    }
+}
+
+component Page {
+    Div {
+        Header {}
+        Text { text: "Welcome" }
+    }
+}
+```
+
+
+
+## The `Component` Return Type
+
+Functions that return a component use `Component` as the return type:
+
+```slynx
+func main(): Component {
+    Greeting {}
+}
+```

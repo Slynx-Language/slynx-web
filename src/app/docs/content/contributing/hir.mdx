@@ -1,0 +1,66 @@
+# HIR — High-Level Intermediate Representation
+
+The HIR is the phase between the raw AST and the IR. It takes the unanalyzed tree produced by the parser and transforms it into a semantically richer structure: names are resolved to stable handles, types are assigned or inferred, and constructs are simplified into more uniform shapes.
+
+This is where string interning begins — all identifiers become `SymbolPointer` values from this point forward.
+
+## What the HIR does
+
+The HIR phase has three main responsibilities:
+
+1. **Name resolution** — every identifier is looked up in the current scope and replaced with a stable `SymbolPointer`. If a name doesn't exist, a `NameNotRecognized` error is emitted immediately.
+2. **Basic type assignment** — types are attached to every expression and declaration. Where the type can be inferred from context (e.g. a literal, a function call with a known return type), it is resolved. Where it can't yet, `HirType::Infer` is used as a placeholder for the type checker.
+3. **Structural simplification** — the AST has many loose forms (optional type annotations, `GenericIdentifier` strings, raw `String` names). The HIR replaces all of these with typed IDs: `TypeId`, `VariableId`, `DeclarationId`, `ExpressionId`.
+
+## Two-phase generation
+
+`SlynxHir::generate()` runs in two passes over the AST:
+
+**Phase 1 — Hoisting**: every top-level declaration is registered in the scope table without processing its body. This means a function can call another function defined later in the file — all names are visible before any body is resolved.
+
+**Phase 2 — Resolution**: each declaration's body is walked, expressions are typed, variable references are resolved, and the final `HirDeclaration` nodes are built and pushed into `hir.declarations`.
+
+## Key types
+
+### `HirType`
+
+The HIR's type representation. Replaces the raw `GenericIdentifier` strings from the AST. Key variants:
+
+- `Int32`, `Float32`, `Bool`, `Str`, `Void`, `Component` — built-in primitives.
+- `Struct { fields: Vec<TypeId> }` — the layout of an `object`.
+- `Tuple { fields: Vec<TypeId> }` — a tuple type.
+- `Function { args, return_type }` — a function signature.
+- `Reference { rf }` — a named type that points to another `TypeId` (used for objects, aliases, components).
+- `Infer` — placeholder used when the type is not yet known; resolved by the type checker.
+
+### `TypeId`, `VariableId`, `DeclarationId`, `ExpressionId`
+
+Typed integer IDs. Instead of carrying names or AST nodes around, the HIR uses these IDs to refer to things. All lookups go through `HirModules`, which maps IDs to their actual data.
+
+### `HirModules`
+
+The central context of the HIR. It manages:
+
+- **Scopes** — a stack of symbol tables. `enter_scope()` / `exit_scope()` wrap function bodies, component bodies, etc.
+- **Symbol interning** — `intern_name(s)` converts a `&str` to a `SymbolPointer` via the `SymbolsModule` from `common`.
+- **Type registry** — maps `TypeId` → `HirType` and `SymbolPointer` → `TypeId`.
+- **Variable registry** — maps `VariableId` → variable info (name, type, mutability).
+- **Declaration registry** — maps `SymbolPointer` → `DeclarationId`.
+
+## Error handling
+
+All HIR operations return `Result<T, HIRError>`. Errors carry a `Span` pointing to the source location. The main error kinds:
+
+| Error | Meaning |
+|-------|---------|
+| `NameNotRecognized` | Identifier used but not defined in scope |
+| `TypeNotRecognized` | Type name not found |
+| `NameAlreadyDefined` | Duplicate declaration in same scope |
+| `PropertyNotRecognized` | Field access on a type that doesn't have that field |
+| `PropertyNotVisible` | Field exists but is private |
+| `MissingProperty` | Object construction missing required fields |
+| `NotAFunction` | Call expression on a non-function value |
+| `InvalidFuncallArgLength` | Wrong number of arguments in a call |
+| `RecursiveType` | Object field references its own type without indirection |
+| `InvalidBinaryExpression` | Binary op applied to incompatible types |
+| `InvalidTupleIndex` | Tuple index out of bounds |
