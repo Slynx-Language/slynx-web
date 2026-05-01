@@ -100,7 +100,7 @@ export default function Home() {
 				<LangCapabilities
 					capabilities={[
 						{
-							title: "modern UIs",
+							title: "Modern UIs",
 							description:
 								"Create buttery smooth 120fps interfaces with our declarative UI engine.",
 						},
