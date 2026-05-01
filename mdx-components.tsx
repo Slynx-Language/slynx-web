@@ -15,11 +15,11 @@ import { DocsCodeBlock, DocsSection } from "./src/components/docs/DocsContent";
 export function useMDXComponents(components: MDXComponents): MDXComponents {
 	return {
 		h2: ({ children, id }) => (
-			<h2 id={id} className={styles.sectionTitle}>
+			<h2 id={id} className="text-lg font-semibold text-[var(--title-color)] tracking-tight">
 				# {children}
 			</h2>
 		),
-		p: ({ children }) => <p className={styles.paragraph}>{children}</p>,
+		p: ({ children }) => <p className="text-sm leading-7 text-[var(--foreground)] opacity-80">{children}</p>,
 		pre: ({ children }) => {
 			const codeEl = children as React.ReactElement<{
 				children?: React.ReactNode;
