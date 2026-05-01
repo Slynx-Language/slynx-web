@@ -2,7 +2,6 @@
 import type { MDXComponents } from "mdx/types";
 import React from "react";
 import { DocsCodeBlock, DocsSection } from "./src/components/docs/DocsContent";
-import styles from "./src/components/docs/DocsContent.module.css";
 
 /**
  * Maps MDX tags to styled documentation components.

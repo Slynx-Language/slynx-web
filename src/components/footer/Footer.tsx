@@ -1,5 +1,4 @@
 import Image from "next/image"
-import FooterStyles from "./Footer.module.css"
 import { FooterLink } from "./FooterLink"
 
 /**

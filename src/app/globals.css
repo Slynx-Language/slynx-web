@@ -129,6 +129,8 @@
 }
 
 .dark {
+  --title-color: #fff;
+
   --primary-brand-color: var(--color-emerald-400);
   --primary-start: oklch(0.432 0.095 166.913);
   --primary-end: var(--color-emerald-500);

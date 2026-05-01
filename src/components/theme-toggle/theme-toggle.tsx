@@ -2,7 +2,6 @@
 
 import { useTheme } from "next-themes"
 import Icon from "../icon"
-import styles from "../header/header.module.css"
 
 export default function ThemeToggle() {
     const { setTheme, resolvedTheme } = useTheme()
@@ -10,17 +9,9 @@ export default function ThemeToggle() {
     return (
         <button
             type="button"
-            className={styles.iconBtn}
+            className="flex items-center justify-center w-8 h-8 p-1.5 rounded-full text-[var(--frame-foreground)]"
             onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
             aria-label="Toggle theme"
-            style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '32px',
-                height: '32px',
-                color: 'var(--frame-foreground)'
-            }}
         >
             <Icon
                 icon={resolvedTheme === 'dark' ? "material-symbols:light-mode-rounded" : "material-symbols:dark-mode-rounded"}
