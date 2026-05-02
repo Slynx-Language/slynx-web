@@ -1,0 +1,76 @@
+# Objects
+
+## What is an Object
+
+An object is a grouping of named values. It defines a set of N fields, each with a name and a type, forming a complex type that can be used anywhere in the language.
+
+## Declaring
+
+```slynx
+object Person {
+    name: str,
+    age: int,
+}
+```
+
+The syntax is:
+- the `object` keyword followed by the name in **PascalCase**
+- a block delimited by `{}`
+- inside the block, each field follows the format `name: type,`
+
+## Instantiating
+
+```slynx
+let hello = Person("hello", 19);
+```
+
+Values are passed in the order the fields were declared.
+
+## Accessing Fields
+
+```slynx
+let hello = Person("hello", 19);
+hello.name // returns "hello"
+hello.age  // returns 19
+```
+
+Fields can also be assigned:
+
+```slynx
+object Slynx {
+    name: str,
+}
+
+func main(): () {
+    let linguagem = Slynx("slynx");
+    let mut n = Slynx("rust");
+    n.name = linguagem.name;
+    ()
+}
+```
+
+## Using as a Type
+
+An object declaration becomes a type and can be used as a parameter or return type in functions:
+
+```slynx
+object Person {
+    name: str,
+    age: int,
+}
+
+func new(name: str, age: int): Person {
+    return Person(name, age);
+}
+
+func manipule(person: Person): Person {
+    let result = Person(person.name, 12);
+    return result;
+}
+
+func main(): () {
+    let mut init = new("sla", 12);
+    init = manipule(init);
+    ()
+}
+```

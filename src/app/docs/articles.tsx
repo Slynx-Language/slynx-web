@@ -2,7 +2,7 @@
 // Single source of truth for all documentation content.
 // To add a new article: add an object to DOCS and create the matching .mdx file.
 
-import type { TocItem } from "../../components/docs/DocsTOC"
+import type { TocItem } from "../../components/docs/DocsTOC";
 import WhatIsIt from "./content/introduction/whatisit.mdx";
 import Installation from "./content/introduction/installation.mdx";
 import FirstSteps from "./content/guides/first-steps.mdx";
@@ -11,6 +11,8 @@ import Strings from "./content/guides/strings.mdx";
 import NumericTypes from "./content/guides/numeric-types.mdx";
 import Conditionals from "./content/guides/conditionals.mdx";
 import SpecializedComponents from "./content/guides/specialized-components.mdx";
+import Objects from "./content/guides/objects.mdx";
+
 import { ReactNode } from "react";
 
 type Mdx = (props: any) => ReactNode;
@@ -20,9 +22,9 @@ type Mdx = (props: any) => ReactNode;
 /** A single entry in the Table of Contents. Must match a ## heading id in the .mdx file. */
 interface Topic {
   /** Must match the id of a ## heading in the corresponding .mdx file */
-  id: string
+  id: string;
   /** Label displayed in the TOC sidebar */
-  label: string
+  label: string;
 }
 
 /**
@@ -35,23 +37,23 @@ interface DocArticle {
    * Must match the path of the .mdx file inside `./content/`.
    * @example "introducao/instalacao" → loads `./content/introducao/instalacao.mdx`
    */
-  key: string
+  key: string;
   /** Short label displayed in the sidebar navigation */
-  label: string
+  label: string;
   /** Full title displayed at the top of the article page */
-  title: string
+  title: string;
   /**
    * Groups the article under a sidebar section.
    * If the section does not exist yet, it will be created automatically.
    * @example "Introdução" | "Guias"
    */
-  section: string
+  section: string;
   /**
    * List of TOC entries for this article.
    * Each `id` must match a ## heading id in the corresponding .mdx file.
    */
-  topics: Topic[],
-  content: Mdx
+  topics: Topic[];
+  content: Mdx;
 }
 
 // ─── Source ───────────────────────────────────────────────────────────────────
@@ -83,7 +85,7 @@ const DOCS: DocArticle[] = [
       { id: "requisites", label: "Requirements" },
       { id: "installing", label: "Installing" },
     ],
-    content: Installation
+    content: Installation,
   },
   {
     key: "guides/first-steps",
@@ -94,7 +96,7 @@ const DOCS: DocArticle[] = [
       { id: "configuring", label: "Configuring" },
       { id: "basic-usage", label: "Basic Usage" },
     ],
-    content: FirstSteps
+    content: FirstSteps,
   },
   {
     key: "guides/functions",
@@ -108,7 +110,7 @@ const DOCS: DocArticle[] = [
       { id: "func-sign", label: "Function Signatures" },
       { id: "tuples", label: "Tuples" },
     ],
-    content: Functions
+    content: Functions,
   },
   {
     key: "guides/strings",
@@ -119,7 +121,7 @@ const DOCS: DocArticle[] = [
       { id: "characteristics", label: "Characteristics" },
       { id: "current-state", label: "Current State" },
     ],
-    content: Strings
+    content: Strings,
   },
   {
     key: "guides/numeric-types",
@@ -130,7 +132,7 @@ const DOCS: DocArticle[] = [
       { id: "current", label: "Current Types" },
       { id: "futures", label: "Future Types" },
     ],
-    content: NumericTypes
+    content: NumericTypes,
   },
   {
     key: "guides/conditionals",
@@ -142,7 +144,7 @@ const DOCS: DocArticle[] = [
       { id: "exaustiviness", label: "Exaustiviness" },
       { id: "while", label: "While" },
     ],
-    content: Conditionals
+    content: Conditionals,
   },
   {
     key: "guides/specialized-components",
@@ -153,9 +155,23 @@ const DOCS: DocArticle[] = [
       { id: "text", label: "Text" },
       { id: "div", label: "Div" },
     ],
-    content: SpecializedComponents
+    content: SpecializedComponents,
   },
-]
+  {
+    key: "guides/objects",
+    label: "Objects",
+    title: "Objects",
+    section: "Guides",
+    topics: [
+      { id: "what-is", label: "What is an Object" },
+      { id: "declaring", label: "Declaring" },
+      { id: "instantiating", label: "Instantiating" },
+      { id: "accessing-fields", label: "Accessing Fields" },
+      { id: "as-a-type", label: "Using as a Type" },
+    ],
+    content: Objects,
+  },
+];
 
 // ─── Derived exports ──────────────────────────────────────────────────────────
 
@@ -169,8 +185,8 @@ export const ARTICLES = DOCS.map(({ key, title, topics, content }) => ({
   key,
   title,
   toc: topics as TocItem[],
-  content
-}))
+  content,
+}));
 
 /**
  * Sidebar navigation sections, grouped by the `section` field in `DOCS`.
@@ -186,12 +202,11 @@ export const ARTICLES = DOCS.map(({ key, title, topics, content }) => ({
  * ]
  */
 export const NAV_SECTIONS = Object.values(
-  DOCS.reduce<Record<string, { title: string; items: { label: string; key: string }[] }>>(
-    (acc, doc) => {
-      if (!acc[doc.section]) acc[doc.section] = { title: doc.section, items: [] }
-      acc[doc.section].items.push({ label: doc.label, key: doc.key })
-      return acc
-    },
-    {}
-  )
-)
+  DOCS.reduce<
+    Record<string, { title: string; items: { label: string; key: string }[] }>
+  >((acc, doc) => {
+    if (!acc[doc.section]) acc[doc.section] = { title: doc.section, items: [] };
+    acc[doc.section].items.push({ label: doc.label, key: doc.key });
+    return acc;
+  }, {}),
+);
