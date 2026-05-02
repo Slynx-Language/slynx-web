@@ -1,21 +1,35 @@
 // src/app/components/docs/DocsContent.tsx
 
-export function DocsSection({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
+export function DocsSection({
+  id,
+  title,
+  children,
+}: {
+  id: string;
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
     <section id={id} className="flex flex-col gap-4">
-      <h2 className="text-lg font-semibold text-[var(--title-color)] tracking-[-0.01em]">
+      <h2 className="text-lg font-semibold text-(--title-color) tracking-[-0.01em]">
         # {title}
       </h2>
       <div className="flex flex-col gap-4">{children}</div>
     </section>
-  )
+  );
 }
 
-export function DocsCodeBlock({ code, language }: { code: string; language?: string }) {
+export function DocsCodeBlock({
+  code,
+  language,
+}: {
+  code: string;
+  language?: string;
+}) {
   return (
-    <div className="rounded-[var(--frame-round)] border border-white/[0.08] overflow-hidden">
+    <div className="rounded-(--frame-round) border border-white/8 overflow-hidden">
       {language && (
-        <span className="block bg-white/[0.05] text-foreground text-[10px] uppercase tracking-[0.1em] px-3.5 py-1 opacity-40">
+        <span className="block bg-white/5 text-foreground text-[10px] uppercase tracking-widest px-3.5 py-1 opacity-40">
           {language}
         </span>
       )}
@@ -23,5 +37,5 @@ export function DocsCodeBlock({ code, language }: { code: string; language?: str
         <code className="font-[inherit] whitespace-pre">{code}</code>
       </pre>
     </div>
-  )
+  );
 }
