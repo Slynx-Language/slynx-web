@@ -21,7 +21,7 @@ The syntax is:
 ## Instantiating
 
 ```slynx
-let hello = Person("hello", 19);
+let hello = Person(name:"hello", age:19);
 ```
 
 Values are passed in the order the fields were declared.
@@ -29,7 +29,7 @@ Values are passed in the order the fields were declared.
 ## Accessing Fields
 
 ```slynx
-let hello = Person("hello", 19);
+let hello = Person(name:"hello", age:19);
 hello.name // returns "hello"
 hello.age  // returns 19
 ```
@@ -42,8 +42,8 @@ object Slynx {
 }
 
 func main(): () {
-    let linguagem = Slynx("slynx");
-    let mut n = Slynx("rust");
+    let linguagem = Slynx(name:"slynx");
+    let mut n = Slynx(name: "rust");
     n.name = linguagem.name;
     ()
 }
@@ -60,11 +60,11 @@ object Person {
 }
 
 func new(name: str, age: int): Person {
-    return Person(name, age);
+    return Person(name:name, age:age);
 }
 
 func manipule(person: Person): Person {
-    let result = Person(person.name, 12);
+    let result = Person(name:person.name, age:12);
     return result;
 }
 
