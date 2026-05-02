@@ -1,0 +1,169 @@
+# Middleend and SlynxIR
+
+The middleend is where the Slynx compiler ideally finishes its work. It takes the type-checked, monomorphized HIR and lowers it into **SlynxIR** — a strongly typed, SSA-oriented intermediate representation that serves as the stable contract between the language and any downstream backend compiler.
+
+Backends (like `slynx-to-js`) consume the `.sir` output and emit their target. The middleend itself is target-agnostic.
+
+> The `middleend/README.md` is the specification for SlynxIR. Not everything described there is emitted by the current codebase yet — treat it as the target shape the project is moving toward.
+
+---
+
+## What is SSA?
+
+SSA (Static Single Assignment) means every variable is assigned exactly once. Instead of mutating a variable, you create a new one. This makes data flow explicit and simplifies optimization and analysis.
+
+---
+
+## Basic Structure
+
+### Types
+
+The IR has its own primitive types, independent of Slynx source types:
+
+- Signed integers: `i8`, `i16`, `i32`, `i64`, `i128`
+- Unsigned integers: `u8`, `u16`, `u32`, `u64`, `u128`
+- Floats: `f32`, `f64`
+- Boolean: `bool`
+- Platform-sized: `usize`, `isize` (fallback: `u64` / `i64`)
+- Strings: `%StrHandle` — a `{ ptr: usize, length: usize }` struct (see below)
+
+The Slynx source types `int` and `float` map to `i32` and `f32` respectively.
+
+### Structs
+
+Objects become structs in the IR, identified by their field types in order:
+
+```slynxir
+struct %Person {%StrHandle, i32}
+```
+
+This corresponds to:
+
+```slynx
+object Person {
+    name: str,
+    age: int,
+}
+```
+
+Fields have no names in the IR — they are accessed by index.
+
+### Strings and `%StrHandle`
+
+Strings in the IR are immutable and interned. They are represented as a `%StrHandle`:
+
+```slynxir
+struct %StrHandle {usize, usize}  // ptr, length in bytes
+```
+
+String literals become named global handles (`@str0`, `@str1`, ...) that the backend resolves against an internal string table. Code never sees the raw bytes — only the handle.
+
+---
+
+## Contexts and Basic Blocks
+
+A **context** is any piece of code that executes instructions: functions and components. Structs alone are not contexts.
+
+Every context is made of **basic blocks**. A basic block is a linear sequence of instructions that must end with a **termination operation**. There are no jumps inside a block — control flow happens only at the termination.
+
+### Labels
+
+Labels (`$name`) are named blocks inside a context. They can receive parameters (`lp0`, `lp1`, ...) and are entered via `br` or `cbr`:
+
+```slynxir
+i32 main(i32) {
+$entry:
+  inc = add i32 p0, 1;
+  br $end(inc)
+$end(i32):
+  twice = mul i32 lp0, 2;
+  ret twice;
+}
+```
+
+### Functions
+
+Functions are declared with their return type, name, and parameter types. Parameters are named `p0`, `p1`, ...:
+
+```slynxir
+i32 #add(i32, i32) {
+$entry:
+  result = add i32 p0, p1;
+  ret result;
+}
+```
+
+---
+
+## Instructions
+
+### Variable operations
+- `allocate ty` — declares a variable slot of type `ty`
+- `write ty, handle, value` — writes a value into a slot
+- `read ty, handle` — reads a value from a slot
+- `reinterpret ty, slot` — reinterprets a slot as a different type
+
+### Termination operations
+- `ret value` — returns from a function
+- `br $label(args...)` — unconditional branch to a label
+- `cbr cond, $if(args...), $else(args...)` — conditional branch
+
+### General operations
+- `copy value` — explicitly copies a value. Everything in the IR is moved by default, so copies are always opt-in.
+- `call f, arg0, arg1, ...` — calls a function
+- `cast ty, value` — casts a value to a different type
+- `select cond, v1, v2` — returns `v1` if `cond` is true, `v2` otherwise
+
+### Move semantics
+
+Slynx is designed around move semantics: values are moved by default and copies are always explicit via `copy`. This model is intended to be enforced at the HIR and IR levels. The full move semantics system is not yet implemented — it is tentatively planned for v0.0.3 or later, after v0.0.2 is complete.
+
+### Arithmetic (wrapping by default)
+`add`, `sub`, `mul`, `div`, `rem` — each takes `ty, a, b`
+
+Saturating variants: `sat_add`, `sat_sub`, `sat_mul`
+
+### Bitwise (integers only)
+`band`, `bor`, `bxor`, `bnot`, `shl`, `shr` (logical), `ashr` (arithmetic)
+
+### Comparisons
+
+`cmp` (equal), `cmpne` (not equal), `cmpgt` (greater than), `cmpgte` (greater or equal), `cmplt` (less than), `cmplte` (less or equal), `negate` (boolean not)
+
+---
+
+## Components in the IR
+
+Components are first-class contexts in the IR. They have props as parameters and declare their children as named slots. Reactivity is expressed through UI operations:
+
+```
+component %Counter(i32) {
+  %count: i32 = p0;
+
+  #t0: specialized Text;
+  #t1: specialized Text;
+
+  @bind %count -> field #t0, 0;
+  @bind %count |> f -> field #t1, 0;
+}
+```
+
+### UI Operations
+
+These instructions (prefixed with `@`) are specific to the UI layer:
+
+- `@bind %prop -> value` — when `%prop` updates, update `value` with the new value. `|> f` pipes the value through a function first.
+- `@emit Component, %prop` — trigger all binds associated with `%prop` on `Component`.
+- `@rerender Component` — signal that `Component` should re-render.
+- `@hide Component, #child` — remove `#child` from the UI tree.
+- `@reveal Component, #child` — restore `#child` to the UI tree.
+
+The IR does not dictate how the backend implements these — whether it kills a component on `@hide` or caches it is the backend's choice.
+
+---
+
+## What is implemented today
+
+The current `main` branch lowers source into `SlynxIR` and writes `.sir` output. The textual format is still Rust debug-style, not a stable versioned contract. Not every instruction and construct described in this spec is emitted yet.
+
+The spec (`middleend/README.md`) is the source of truth. If the code disagrees with it, the code is wrong — not the spec. The likely outcome is that the code gets fixed to match. The spec only changes if a technically superior approach is found that justifies replacing the current design: the language is driven purely by technical merit, so if a better idea emerges and can be argued on those grounds, the spec updates and the old work is discarded. Otherwise, the spec stands and the implementation catches up.

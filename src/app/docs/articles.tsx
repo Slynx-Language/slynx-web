@@ -12,7 +12,20 @@ import NumericTypes from "./content/guides/numeric-types.mdx";
 import Conditionals from "./content/guides/conditionals.mdx";
 import SpecializedComponents from "./content/guides/specialized-components.mdx";
 import Objects from "./content/guides/objects.mdx";
-
+import NamingConventions from "./content/guides/naming-conventions.mdx";
+import Aliases from "./content/guides/aliases.mdx";
+import Booleans from "./content/guides/booleans.mdx";
+import Comments from "./content/guides/comments.mdx";
+import Components from "./content/guides/components.mdx";
+import Roadmap002 from "./content/guides/roadmap-0-0-2.mdx";
+import LongTermGoals from "./content/guides/long-term-goals.mdx";
+import ContributingOverview from "./content/contributing/overview.mdx";
+import ContributingPipeline from "./content/contributing/pipeline.mdx";
+import ContributingCommon from "./content/contributing/common.mdx";
+import LexerParser from "./content/contributing/lexer-parser.mdx";
+import Hir from "./content/contributing/hir.mdx";
+import TypeChecker from "./content/contributing/typechecker.mdx";
+import Middleend from "./content/contributing/middleend.mdx";
 import { ReactNode } from "react";
 
 type Mdx = (props: any) => ReactNode;
@@ -129,8 +142,9 @@ const DOCS: DocArticle[] = [
     title: "Numbers",
     section: "Guides",
     topics: [
-      { id: "current", label: "Current Types" },
-      { id: "futures", label: "Future Types" },
+      { id: "current-types", label: "Current Types" },
+      { id: "future-types", label: "Future Types" },
+      { id: "numeric-literals", label: "Numeric Literals" },
     ],
     content: NumericTypes,
   },
@@ -171,7 +185,208 @@ const DOCS: DocArticle[] = [
     ],
     content: Objects,
   },
-];
+  {
+    key: "guides/objects",
+    label: "Objects",
+    title: "Objects",
+    section: "Guides",
+    topics: [
+      { id: "declaring-an-object", label: "Declaring an Object" },
+      { id: "creating-an-instance", label: "Creating an Instance" },
+      { id: "accessing-fields", label: "Accessing Fields" },
+      { id: "mutating-fields", label: "Mutating Fields" },
+      { id: "using-objects-in-functions", label: "Using in Functions" },
+      { id: "aliases", label: "Aliases" },
+    ],
+    content: Objects
+  },
+  {
+    key: "guides/naming-conventions",
+    label: "Naming Conventions",
+    title: "Naming Conventions",
+    section: "Guides",
+    topics: [
+      { id: "types-objects-and-components", label: "Types & Objects" },
+      { id: "variables-and-function-parameters", label: "Variables" },
+      { id: "functions", label: "Functions" },
+      { id: "constants", label: "Constants" },
+      { id: "component-props", label: "Component Props" },
+    ],
+    content: NamingConventions
+  },
+  {
+    key: "guides/aliases",
+    label: "Aliases",
+    title: "Aliases",
+    section: "Guides",
+    topics: [
+      { id: "usage", label: "Usage" },
+      { id: "aliasing-built-in-types", label: "Built-in Types" },
+      { id: "notes", label: "Notes" },
+    ],
+    content: Aliases
+  },
+  {
+    key: "guides/booleans",
+    label: "Booleans",
+    title: "Booleans",
+    section: "Guides",
+    topics: [
+      { id: "boolean-operators", label: "Boolean Operators" },
+      { id: "comparison-operators", label: "Comparison Operators" },
+      { id: "using-booleans-in-conditions", label: "In Conditions" },
+    ],
+    content: Booleans
+  },
+  {
+    key: "guides/comments",
+    label: "Comments",
+    title: "Comments",
+    section: "Guides",
+    topics: [
+      { id: "line-comments", label: "Line Comments" },
+      { id: "block-comments", label: "Block Comments" },
+    ],
+    content: Comments
+  },
+  {
+    key: "guides/components",
+    label: "Components",
+    title: "Components",
+    section: "Guides",
+    topics: [
+      { id: "props", label: "Props" },
+      { id: "instantiating-a-component", label: "Instantiating" },
+      { id: "composing-components", label: "Composing" },
+      { id: "the-component-return-type", label: "Return Type" },
+    ],
+    content: Components
+  },
+  {
+    key: "contributing/overview",
+    label: "Contributing",
+    title: "Contributing",
+    section: "Contributing",
+    topics: [
+      { id: "where-to-contribute", label: "Where to Contribute" },
+      { id: "setup", label: "Setup" },
+      { id: "workflow", label: "Workflow" },
+    ],
+    content: ContributingOverview
+  },
+  {
+    key: "contributing/pipeline",
+    label: "Compilation Pipeline",
+    title: "Compilation Pipeline",
+    section: "Contributing",
+    topics: [
+      { id: "overview", label: "Overview" },
+      { id: "crates", label: "Crates" },
+      { id: "entry-points", label: "Entry Points" },
+      { id: "current-state", label: "Current State" },
+    ],
+    content: ContributingPipeline
+  },
+  {
+    key: "contributing/common",
+    label: "The common Crate",
+    title: "The common Crate",
+    section: "Contributing",
+    topics: [
+      { id: "whats-inside", label: "What's Inside" },
+      { id: "ast-types-ast", label: "AST Types" },
+      { id: "symbols-symbolsrs", label: "Symbols" },
+    ],
+    content: ContributingCommon
+  },
+  {
+    key: "contributing/lexer-parser",
+    label: "Lexer and Parser",
+    title: "Lexer and Parser",
+    section: "Contributing",
+    topics: [
+      { id: "lexer", label: "Lexer" },
+      { id: "parser", label: "Parser" },
+    ],
+    content: LexerParser
+  },
+  {
+    key: "contributing/hir",
+    label: "HIR",
+    title: "HIR",
+    section: "Contributing",
+    topics: [
+      { id: "what-the-hir-does", label: "What the HIR does" },
+      { id: "two-phase-generation", label: "Two-phase generation" },
+      { id: "key-types", label: "Key types" },
+      { id: "error-handling", label: "Error handling" },
+    ],
+    content: Hir
+  },
+  {
+    key: "contributing/typechecker",
+    label: "Type Checker & Monomorphizer",
+    title: "Type Checker and Monomorphizer",
+    section: "Contributing",
+    topics: [
+      { id: "type-checker", label: "Type Checker" },
+      { id: "monomorphizer", label: "Monomorphizer" },
+    ],
+    content: TypeChecker
+  },
+  {
+    key: "contributing/middleend",
+    label: "Middleend & SlynxIR",
+    title: "Middleend and SlynxIR",
+    section: "Contributing",
+    topics: [
+      { id: "basic-structure", label: "Basic Structure" },
+      { id: "contexts-and-basic-blocks", label: "Contexts & Basic Blocks" },
+      { id: "instructions", label: "Instructions" },
+      { id: "components-in-the-ir", label: "Components in the IR" },
+      { id: "what-is-implemented-today", label: "Current State" },
+    ],
+    content: Middleend
+  },
+  {
+    key: "guides/roadmap-0-0-2",
+    label: "Planned for v0.0.2",
+    title: "Planned for v0.0.2",
+    section: "Goals",
+    topics: [
+      { id: "numeric-types", label: "Numeric Types" },
+      { id: "imports-and-modules", label: "Imports" },
+      { id: "for-loops", label: "For Loops" },
+      { id: "array-indexing", label: "Array Indexing" },
+      { id: "unary-operators", label: "Unary Operators" },
+      { id: "compound-assignment-operators", label: "Compound Assignment" },
+    ],
+    content: Roadmap002
+  },
+  {
+    key: "guides/long-term-goals",
+    label: "Long-term Goals",
+    title: "Long-term Goals",
+    section: "Goals",
+    topics: [
+      { id: "move-semantics", label: "Move Semantics" },
+      { id: "state-based-type-system", label: "State-based Types" },
+      { id: "pattern-matching", label: "Pattern Matching" },
+      { id: "enums-and-adts", label: "Enums & ADTs" },
+      { id: "methods", label: "Methods" },
+      { id: "interfaces", label: "Interfaces" },
+      { id: "extensions", label: "Extensions" },
+      { id: "lanes-data-oriented-layout", label: "Lanes (SoA)" },
+      { id: "reactivity-model-redesign", label: "Reactivity Redesign" },
+      { id: "slot-system", label: "Slot System" },
+      { id: "styling-system", label: "Styling System" },
+      { id: "macros-and-comptime-functions", label: "Macros & Comptime" },
+      { id: "package-manager-and-cli", label: "Package Manager & CLI" },
+      { id: "object--struct-rename", label: "object → struct" },
+    ],
+    content: LongTermGoals
+  },
+]
 
 // ─── Derived exports ──────────────────────────────────────────────────────────
 

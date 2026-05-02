@@ -1,0 +1,434 @@
+# Long-term Goals
+
+This page describes design goals that are planned for the language but have no fixed version target yet. These are architectural directions, not near-term features. Some of them might change significantly or be discarded entirely.
+
+---
+
+## Move Semantics
+
+Slynx is designed to have a move semantics system similar to Rust's. The idea is that values are **moved by default** — when you pass a value somewhere, ownership transfers and the original binding becomes invalid. Copies are always explicit.
+
+This model exists to enable the compiler to make strong guarantees about data ownership and lifetime, which in turn allows for aggressive optimizations: no hidden allocations, no unexpected aliasing, and no need for a garbage collector.
+
+The system is intended to be enforced at both the HIR and IR levels. At the IR level, `copy` is already the explicit opt-in instruction for duplicating a value — the move-by-default assumption is already baked into the IR design.
+
+Enforcement at the language and HIR level (borrow checking, move tracking, lifetime analysis) is tentatively planned for v0.0.3 or later, after v0.0.2 is complete. Nothing is confirmed yet.
+
+## State-based Type System
+
+Slynx is designed to have a type system where types can carry **states** — compile-time-only markers that describe what a value is allowed to do at a given point in the program.
+
+States are similar to enums but exist only during type checking. They are erased before IR generation. The compiler uses them to enforce that certain operations are only valid when a type is in the correct state, and that values in non-terminal states cannot be silently dropped.
+
+The idealized syntax uses a `state` declaration:
+
+```slynx
+// idealized syntax
+state SocketState {
+    Opened,
+    @dead Closed,
+}
+```
+
+`@dead` marks a state as terminal — a value must reach a dead state before it goes out of scope. A value that goes out of scope while still in a non-dead state is a compile error.
+
+An object would then declare which state it carries:
+
+```slynx
+// idealized syntax
+object Socket[SocketState] {
+    // ...
+}
+```
+
+The compiler would then enforce:
+- You cannot call `send` on a `Socket[Closed]`.
+- You cannot end a scope holding a `Socket[Opened]` — it must be closed first.
+- Transitioning between states is explicit and tracked statically.
+
+This system is intended to complement move semantics: together they give the compiler enough information to reason about resource lifetimes entirely at compile time, with no runtime overhead.
+
+Beyond sockets, the state system applies anywhere a resource has a well-defined lifecycle:
+
+- **Memory allocators** — an allocator in `Uninitialized` state cannot allocate; an allocator that was never freed cannot go out of scope.
+- **File handles** — a file must be closed before the binding is dropped.
+- **Database transactions** — a transaction must be committed or rolled back; leaving it open is a compile error.
+- **Locks and mutexes** — a lock must be released before the scope ends.
+- **Network connections**, **GPU command buffers**, **hardware peripherals** — anything with an open/close or acquire/release contract.
+
+The compiler enforces these contracts statically with zero runtime cost.
+
+### Benefits
+
+The typestate system eliminates entire classes of bugs at compile time with no runtime cost:
+
+- **Memory leaks** — an allocator or buffer that was never freed cannot compile. The `@dead` state forces the programmer to release it.
+- **Resource leaks** — open file handles, unclosed database connections, unreleased locks, open network sockets — all caught at compile time if they go out of scope in a non-dead state.
+- **Use-after-close** — calling a method that requires `Opened` state on a `Closed` value is a type error. The compiler knows the state at every point in the program.
+- **Double-free / double-close** — closing an already-closed resource transitions to `Closed` again, which is either a type error (if `Closed` has no `close` method) or explicitly handled.
+- **Protocol violations** — any API with a required call order (initialize before use, authenticate before query, begin before commit) can be encoded as states. The compiler enforces the order.
+- **Partial initialization** — a value in `Uninitialized` state cannot be passed where an `Initialized` value is expected. No null pointer surprises.
+
+Combined with move semantics, the state system means the compiler has full visibility into the lifetime and validity of every value — without a garbage collector, without runtime checks, and without relying on programmer discipline.
+
+## Pattern Matching
+
+Slynx will have two forms of pattern matching.
+
+**`if` match** — checks if a value matches a pattern and executes a block if it does:
+
+```slynx
+// idealized syntax
+if value matches Some(x) {
+    // x is bound here
+}
+```
+
+**`switch`** — exhaustive multi-branch matching:
+
+```slynx
+// idealized syntax
+switch value {
+    Some(x): doSomething(x),
+    None: doOther(),
+}
+```
+
+### Exhaustiveness
+
+Both forms are exhaustive. Every possible case must be handled. The compiler rejects patterns that leave any variant unmatched.
+
+### Interaction with the State System
+
+Exhaustiveness extends to the state type system. A state transition must happen on **all** branches — a transition that only happens on one branch is a compile error, because the resulting state would be ambiguous.
+
+For example, if `socket.close()` transitions a `Socket` from `Opened` to `Closed`, this is invalid:
+
+```slynx
+// compile error — state after the if is Open | Closed, which is not a valid state
+if condition {
+    socket.close();
+}
+```
+
+The compiler cannot determine the state of `socket` after this block — it could be `Opened` or `Closed` depending on runtime. Since `Open | Closed` is not a declared state, this is rejected. The fix is to handle both branches explicitly:
+
+```slynx
+// valid — state is deterministically Closed on all paths
+if condition {
+    socket.close();
+} else {
+    socket.close();
+}
+```
+
+---
+
+## Enums and ADTs
+
+Slynx is planned to have algebraic data types (ADTs) modeled after Rust's enums — variants that can carry data:
+
+```slynx
+// idealized syntax
+enum Shape {
+    Circle(float),
+    Rect(float, float),
+    Point,
+}
+```
+
+No version target is set.
+
+## Methods
+
+Structs will be able to declare methods inline. `This` refers to the enclosing type as a type annotation. `this` is the receiver parameter, following the same convention as Rust's `self` but named `this`.
+
+Whether a method takes `this` determines how it behaves with move semantics:
+
+- `this` — takes ownership, moves the value into the method.
+- `&this` — immutable reference, does not move.
+- `&mut this` — mutable reference, does not move.
+- no receiver — static method, called on the type directly.
+
+```slynx
+// idealized syntax
+struct Person {
+    age: int,
+    name: str,
+
+    pub func create(age: int, name: str): This -> This(age: age, name: name); // static
+
+    pub func greet(&this): str -> "Hello, " + this.name; // immutable ref
+
+    pub func birthday(&mut this): void {
+        this.age = this.age + 1;
+    }
+}
+```
+
+No version target is set.
+
+## Interfaces
+
+Interfaces are TypeScript-like: they require method implementations only, not property shapes. A type satisfies an interface if it implements all the required methods:
+
+```slynx
+// idealized syntax
+interface Printable {
+    func print(): void;
+}
+```
+
+No structural property matching — only method contracts. No version target is set.
+
+## Extensions
+
+Extensions allow adding methods to an existing type without modifying its declaration, similar to Rust's `impl` blocks or Swift extensions:
+
+```slynx
+// idealized syntax
+extend Person {
+    func greet(): str -> "Hello, " + self.name;
+}
+```
+
+To implement an interface for an existing type, use `extend ... towards`:
+
+```slynx
+// idealized syntax
+extend Child towards Printable {
+    func print(): void { /* ... */ }
+}
+```
+
+No version target is set.
+
+---
+
+## Lanes (Data-Oriented Layout)
+
+Slynx is designed around Data-Oriented Design. A future addition to support this at the language level is **lanes** — a Structure of Arrays (SoA) layout type, as opposed to the Array of Structures (AoS) layout that regular arrays and vectors use.
+
+Where a `Person[]` stores `[{name, age}, {name, age}, ...]` in memory, a `lane Person` stores `[name, name, ...][age, age, ...]` — each field in its own contiguous block. This is the layout that modern CPUs and SIMD instructions prefer for bulk data processing.
+
+The idealized syntax for declaring a lane mirrors `object`, and creation follows the same pattern as arrays and vectors:
+
+```slynx
+// idealized syntax
+lane Person {
+    name: str,
+    age: int,
+}
+
+let vec = Person[];        // dynamic lane (vector)
+let arr = [1000]Person[];  // fixed-size lane of 1000 entries
+```
+
+### Handle types (`^T`)
+
+Accessing a single element inside a lane returns a **handle** (`^T`) — a reference into the lane at a specific index, not a copy of the data. This is syntax sugar that makes lane access look like regular field access:
+
+```slynx
+// idealized syntax
+let v: ^Person = myLane[5];
+v.age += 1;  // desugars to: myLane.age[5] += 1
+```
+
+The handle `^T` does not own the data — it is a typed index into the lane. The compiler knows the underlying layout and rewrites field accesses accordingly. This keeps the code readable while preserving the SoA memory layout and its cache performance benefits.
+
+Lanes and handle types have no fixed version target.
+
+---
+
+## Reactivity Model (Redesign)
+
+The current `pub prop` / `prop` system is likely to be redesigned. The direction being considered introduces two explicit kinds of props:
+
+**Sandboxed props** — the component owns the value. The parent cannot write to it directly. Declared with `prop`:
+
+```slynx
+// idealized syntax
+component Counter {
+    prop value = 0;
+}
+```
+
+**Bound props** — the prop is a shadow of a value owned by the parent. The child does not hold the data; every read of the prop is transparently replaced by a read of the parent's actual value. Declared with `prop bind`:
+
+```slynx
+// idealized syntax
+component Child {
+    prop bind v: int;
+}
+```
+
+When the parent passes a sandboxed prop into a bound prop, the child's `v` becomes an alias for the parent's `value` at the type-checker level:
+
+```slynx
+// idealized syntax
+component Parent {
+    prop value = 5;
+
+    Child { v: value }
+}
+```
+
+The child cannot mutate the parent's value directly. To propagate changes upward, the child emits an **event** and the parent handles it. The exact event syntax is not yet defined.
+
+This model makes data flow explicit and unidirectional: values flow down through bound props, changes flow up through events.
+
+## Slot System
+
+Slots give components a structured way to accept child content. A `Slot {}` inside a component body marks where children are placed when the component is used.
+
+**Default slot** — any unnamed child goes here:
+
+```slynx
+// idealized syntax
+component Card {
+    Div {
+        Slot {}
+    }
+}
+
+// usage — Text goes where Slot is
+Card {
+    Text { text: "Hello World" }
+}
+```
+
+**Named slots** — declared with a label, filled by matching label at the use site:
+
+```slynx
+// idealized syntax
+component Layout {
+    Div {
+        header: Slot {}
+        Slot {}
+    }
+}
+
+Layout {
+    header: Text { text: "Title" }
+    Text { text: "Body" }
+}
+```
+
+**Typed slots** — a slot can require that its children implement a given interface. If the passed child does not implement it, the compiler errors:
+
+```slynx
+// idealized syntax
+component Feed {
+    Div {
+        Slot implements FeedItem {}
+    }
+}
+
+Feed {
+    Child {}  // compile error if Child doesn't implement FeedItem
+}
+```
+
+The interface implementation for a component follows the same `extend ... towards` syntax:
+
+```slynx
+// idealized syntax
+extend Child towards FeedItem {
+    func render(): Component { /* ... */ }
+}
+```
+
+The full slot model is still being designed. No version target is set.
+
+## Styling System
+
+Components accept a `style` prop that takes a `StyleSheet` value. Stylesheets are declared with the `stylesheet` keyword, can receive parameters, and define a set of style properties:
+
+```slynx
+// idealized syntax
+stylesheet Rounded(radius: int) {
+    style {
+        border_radius: radius,
+    }
+}
+
+Div { style: Rounded(8) }
+```
+
+### Composition
+
+Stylesheets can compose others using `uses`. The order determines merge priority — later entries win over earlier ones, and the current stylesheet wins over all of them:
+
+```slynx
+// idealized syntax
+stylesheet Card() uses Base(), Elevated() {
+    style {
+        background_color: rgba(0xffffffff),
+    }
+}
+```
+
+The effective style is: `merge(Base, Elevated)` then merged with `Card`. If `Base` and `Elevated` both define `foreground`, `Elevated` wins. If `Card` also defines `foreground`, `Card` wins.
+
+This is equivalent to:
+
+```
+Base |> merge(Elevated) |> merge(Card)
+```
+
+No version target is set.
+
+---
+
+## Macros and Comptime Functions
+
+Slynx is designed to have a **comptime** system similar to Zig's — functions and expressions that are evaluated entirely at compile time. Comptime code is regular Slynx code with two restrictions: no I/O and no heap allocation. Everything runs in the compiler and the result is baked into the output.
+
+When a comptime function does not return an `AST`, it behaves like a normal function but evaluated at compile time — useful for constant folding, lookup tables, type-level computations, and metaprogramming:
+
+```slynx
+// idealized syntax
+comptime func fibonacci(n: int): int {
+    if n <= 1 { n } else { fibonacci(n - 1) + fibonacci(n - 2) }
+}
+
+let FIB10 = fibonacci(10); // computed at compile time, emitted as a constant
+```
+
+When a comptime function returns an `AST`, it becomes a **macro** — it receives syntax as input and produces new syntax that is spliced into the call site. Parameters can be special syntax kinds: `Identifier`, `Expression`, literal tokens, and arrow separators:
+
+```slynx
+// idealized syntax
+comptime func f(for, v: Identifier, of v: Expression, ->, out: Expression): AST {
+    // compile-time logic that produces an AST node
+}
+
+f! for n of [1, 2, 3, 4, 5] -> n * n;
+```
+
+Macros are called with `!` suffix syntax. The compiler expands them before type checking — no runtime overhead.
+
+This unified model means there is no separate macro language: metaprogramming, code generation, and compile-time computation all use the same `comptime` mechanism.
+
+The exact parameter syntax, available AST operations, and integration with the type checker are still being designed. No version target is set.
+
+## Package Manager and CLI
+
+Slynx is designed to have a first-party CLI that manages projects, backends, and dependencies in a unified way. The idea is that each backend (JS, WASM, native, etc.) is a separate compiler that the CLI can install and invoke. Projects declare their default backend and dependencies, and the CLI handles the rest.
+
+Idealized commands:
+
+```bash
+slynx-cli new my-project --js     # create a new project targeting the JS backend
+slynx-cli add --js some-library   # add a dependency for the JS target
+slynx-cli build                   # compile using the project's default backend
+slynx-cli build --target wasm     # compile for a specific target
+```
+
+This is a draft goal only. Nothing beyond the general direction has been designed — no config format, no dependency model, no CLI spec, no implementation of any kind. The only thing that exists is the intent.
+
+---
+
+## `object` → `struct` Rename
+
+The `object` keyword may be renamed to `struct` in a future version to better reflect its role as a plain data structure with no behavior. Nothing is confirmed yet.

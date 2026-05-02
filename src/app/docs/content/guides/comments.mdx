@@ -1,0 +1,28 @@
+# Comments
+
+## Line Comments
+
+Use `//` to comment out the rest of a line:
+
+```slynx
+// This is a line comment
+func add(a: int, b: int): int -> a + b; // inline comment
+```
+
+## Block Comments
+
+Use `/* */` to comment out multiple lines at once:
+
+```slynx
+/*
+  This function adds two integers.
+  Both arguments must be of type int.
+*/
+func add(a: int, b: int): int -> a + b;
+```
+
+Block comments can also be used inline:
+
+```slynx
+let x = /* temporary value */ 42;
+```

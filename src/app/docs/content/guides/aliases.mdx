@@ -1,0 +1,44 @@
+# Aliases
+
+The `alias` keyword creates an alternative name for an existing type. It is purely a type-level construct — the alias and the original type are fully interchangeable.
+
+```slynx
+object Person {
+    name: str,
+    age: int,
+}
+
+alias PersonRef = Person;
+```
+
+`PersonRef` and `Person` refer to the same type. You can use either in function signatures, variable declarations, or anywhere a type is expected.
+
+## Usage
+
+```slynx
+func makePerson(name: str, age: int): PersonRef {
+    Person(name: name, age: age)
+}
+
+func main(): int {
+    let p: PersonRef = makePerson("Jorge", 30);
+    p.age
+}
+```
+
+## Aliasing Built-in Types
+
+Aliases also work with built-in types:
+
+```slynx
+alias Age = int;
+alias Label = str;
+
+func getAge(age: Age): Age -> age;
+```
+
+## Notes
+
+- Aliases follow **PascalCase**, same as types.
+- An alias does not create a new type — it is just another name for the same one.
+- Recursive or self-referential aliases are not supported.

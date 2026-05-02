@@ -1,0 +1,65 @@
+# Naming Conventions
+
+Slynx follows the same naming conventions as TypeScript. Here's a quick reference:
+
+## Types, Objects and Components
+
+Use **PascalCase**. This applies to `object`, `component`, and `alias` declarations.
+
+```slynx
+object UserProfile {
+    name: str,
+    age: int,
+}
+
+component LandingPage {
+    pub prop index: float;
+}
+
+alias UserId = int;
+```
+
+The only exceptions are built-in types, which are lowercase: `int`, `float`, `bool`, `str`, `void`.
+
+## Variables and Function Parameters
+
+Use **camelCase**.
+
+```slynx
+func main(): int {
+    let personAge = 30;
+    let firstName = "Jorge";
+    personAge
+}
+```
+
+## Functions
+
+Use **camelCase**, and start the name with an action verb.
+
+```slynx
+func addNumbers(a: int, b: int): int -> a + b;
+
+func makePerson(name: str, age: int): Person {
+    Person(name: name, age: age)
+}
+```
+
+## Constants
+
+Use **UPPER_SNAKE_CASE**.
+
+```slynx
+const MAX_RETRIES: int = 3; // not implemented yet
+```
+
+## Component Props
+
+Props follow **camelCase**, same as variables.
+
+```slynx
+component Button {
+    pub prop isDisabled: bool;
+    pub prop labelText: str;
+}
+```
