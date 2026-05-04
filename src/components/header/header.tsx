@@ -1,33 +1,32 @@
-import NavBar from "./nav-bar/nav-bar"
-import Link from "next/link"
-import Icon from "../icon"
-import styles from "./header.module.css"
-import Logo from "../logo/logo"
-import IconGithub from "../IconGithub"
-import ThemeToggle from "../theme-toggle/theme-toggle"
-
+import { Search } from "lucide-react";
+import Link from "next/link";
+import IconGithub from "../IconGithub";
+import Logo from "../logo/logo";
+import { Button } from "../ui/button";
+import NavBar from "./nav-bar/nav-bar";
 
 export default function Header() {
-  return (
-    <header className={styles.header}>
-      <div className={styles.logoContainer}>
-        <Link href="/" className={styles.logoLink}>
-          <Logo className={styles.logo} />
-          <span className={styles.title}>
-            <span className={styles.letterS}>S</span>
-            <span className={styles.letterLy}>ly</span>
-            <span className={styles.letterN}>n</span>
-            <span className={styles.letterX}>x</span>
-          </span>
-        </Link>
-      </div>
+	return (
+		<header className="grid grid-cols-[auto_1fr_auto] items-center gap-8 w-full max-w-480 px-8 py-2 mx-auto text-black">
+			<div>
+				<Link href="/" className="flex items-center gap-2">
+					<Logo className="w-18 h-16" />
+					<span className="text-3xl font-bold bg-linear-to-r from-primary-start to-primary-end bg-clip-text text-transparent">
+						Slynx
+					</span>
+				</Link>
+			</div>
 
-      <div className={styles.actions}>
-        <button type="button" className={styles.iconBtn}>
-          <Icon icon="material-symbols:search-rounded" height={24} />
-        </button>
+			<div className="flex items-center justify-center min-w-0 justify-self-center">
+				<NavBar />
+			</div>
 
-        {/* <Link href="#" className={`getStartedLink ${styles.headerGetStartedLink}`}>Get Started</Link>
+			<div className="justify-self-end items-center gap-4 hidden md:flex">
+				<Button variant="ghost">
+					<Search className="size-6" />
+				</Button>
+
+				{/* <Link href="#" className={`getStartedLink ${styles.headerGetStartedLink}`}>Get Started</Link>
 
         <ThemeToggle />
 
@@ -35,14 +34,10 @@ export default function Header() {
           <Icon icon="material-symbols:translate" height={24} />
         </button> */}
 
-        <a href="https://github.com/slynx/slynx" target="_blank" className={styles.iconBtn}>
-          <IconGithub />
-        </a>
-      </div>
-
-      <div className={styles.navArea}>
-        <NavBar />
-      </div>
-    </header>
-  );
+				<a href="https://github.com/slynx/slynx" target="_blank" rel="noopener">
+					<IconGithub />
+				</a>
+			</div>
+		</header>
+	);
 }

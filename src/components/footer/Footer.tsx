@@ -1,6 +1,5 @@
-import Link from "next/link";
-import Image from "next/image";
-import FooterStyles from "./Footer.module.css";
+import Image from "next/image"
+import { FooterLink } from "./FooterLink"
 
 /**
  * Creates the footer of the landing page. According to the figma design at `https://www.figma.com/design/Px7bugd5SwPJoVAhVcHhxf/Slynx?node-id=0-1&t=WHAHXM9qxGcr0igM-1`
@@ -15,45 +14,46 @@ import FooterStyles from "./Footer.module.css";
 */
 export function Footer() {
   return (
-    <div className={FooterStyles.outer}>
-      <div className={FooterStyles.footer}>
-        <div>
-          <div className={FooterStyles.brandRow}>
+    <div className="w-full h-full flex flex-col items-center justify-center pt-5">
+      <div className="md:w-[90%] w-full h-full flex flex-col md:flex-row items-start justify-center md:justify-between pt-5 gap-8">
+        <div className="flex flex-col gap-4 min-w-36">
+          <div className="flex items-center gap-2">
             <Image
               src="/lynx-64px-safe.svg"
               alt="Slynx logo"
               width={80}
               height={80}
             />
-            <h1 className={FooterStyles.footer_title}>Slynx</h1>
+            <h1 className="text-4xl font-bold bg-linear-to-r from-primary to-emerald-500 bg-clip-text text-transparent">Slynx</h1>
           </div>
         </div>
-        <div>
-          <h1>Why Slynx</h1>
-          <Link href="/use-case">Use Cases</Link>
-          <Link href="/case-studies">Case Studies</Link>
+        <div className="flex flex-col gap-4 ">
+          <h1 className="font-bold md:text-lg lg:text-2xl">Why Slynx</h1>
+          <FooterLink href="/use-case" label="Use Cases"></FooterLink>
+          <FooterLink href="/case-studies" label="Case Studies"></FooterLink>
         </div>
-        <div>
-          <h1>Get Started</h1>
-          <Link href="/download">Download</Link>
-          <Link href="/docs">Docs</Link>
-          <Link href="/examples">Code Examples</Link>
-          <Link href="/users">Help</Link>
+        <div className="flex flex-col gap-4 ">
+          <h1 className="font-bold md:text-lg lg:text-2xl">Get Started</h1>
+          <FooterLink href="/download" label="Download"></FooterLink>
+          <FooterLink href="/docs" label="Docs"></FooterLink>
+          <FooterLink href="/examples" label="Code Examples"></FooterLink>
+          <FooterLink href="/users" label="Help"></FooterLink>
         </div>
-        <div>
-          <h1>Packages</h1>
-          <Link href="/docs/std">Std Library</Link>
-          <Link href="/package-manager">Registry</Link>
+        <div className="flex flex-col gap-4 ">
+          <h1 className="font-bold md:text-lg lg:text-2xl">Packages</h1>
+          <FooterLink href="/docs/std" label="Std Library"></FooterLink>
+          <FooterLink href="/package-manager" label="Registry"></FooterLink>
         </div>
-        <div>
-          <h1>Social</h1>
-          <Link href="https://github.com/cykna/slynx">Github</Link>
-          <Link href="https://discord.com/">Discord</Link>
-          <Link href="https://x.com/">Twitter</Link>
+        <div className="flex flex-col gap-4 ">
+          <h1 className="font-bold md:text-lg lg:text-2xl">Social</h1>
+          <FooterLink href="https://github.com/cykna/slynx" label="Github"></FooterLink>
+          <FooterLink href="https://discord.com/" label="Discord"></FooterLink>
+          <FooterLink href="https://x.com/" label="Twitter"></FooterLink>
         </div>
       </div>
-      <div className={FooterStyles.divider}></div>
-      <div className={FooterStyles.end_of_page}>Maintained by Slynx Team</div>
+      <div className="w-full border border-black"></div>
+      <div className="h-full flex items-center pt-6 pb-6">Maintained by Slynx Team</div>
     </div>
   )
 }
+

@@ -1,84 +1,57 @@
+"use client";
 // src/app/components/docs/DocsLayout.tsx
 import DocsSidebar, { NavSection } from "./DocsSideBar"
 import DocsTOC, { TocItem } from "./DocsTOC"
-import styles from "./DocsLayout.module.css"
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-/** Represents a navigable page with a label and article key */
 interface Page {
-  /** Text shown in the prev/next button */
   label: string
-  /** Article key passed to `onSelect` when the button is clicked */
   key: string
 }
 
 interface DocsLayoutProps {
-  /** Article content — typically MDX rendered via `<Content />` */
   children: React.ReactNode
-  /** Sidebar navigation sections. See `NavSection` from DocsSidebar. */
   sections: NavSection[]
-  /** TOC items for the current article. Must match ## heading ids in the MDX. */
   tocItems: TocItem[]
-  /** Title displayed at the top of the article */
   title: string
-  /** Key of the currently active article — used to highlight the sidebar link */
   activeKey: string
-  /**
-   * Called when the user selects an article from the sidebar or pagination buttons.
-   * @param key - The key of the selected article
-   */
   onSelect: (key: string) => void
-  /** Previous article. If provided, renders a "← label" button in the footer. */
   prev?: Page
-  /** Next article. If provided, renders a "label →" button in the footer. */
   next?: Page
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
-
-/**
- * Root layout for the documentation page.
- * Composes the sidebar, main content area, and TOC into a three-column layout.
- *
- * @example
- * <DocsLayout
- *   sections={NAV_SECTIONS}
- *   tocItems={current.toc}
- *   title={current.title}
- *   activeKey={activeKey}
- *   onSelect={select}
- *   prev={prev && { label: prev.title, key: prev.key }}
- *   next={next && { label: next.title, key: next.key }}
- * >
- *   {Content ? <Content /> : <p>Loading...</p>}
- * </DocsLayout>
- */
 export default function DocsLayout({
   children, sections, tocItems,
   title, activeKey, onSelect, prev, next,
 }: DocsLayoutProps) {
   return (
-    <div className={styles.root}>
+    <div className="flex w-full h-screen overflow-hidden bg-background max-lg:flex-col max-lg:h-auto max-lg:min-h-screen">
 
       <DocsSidebar sections={sections} activeKey={activeKey} onSelect={onSelect} />
 
-      <main id="docs-main" className={styles.main}>
-        <div className={styles.content}>
-          <h1 className={styles.title}>{title}</h1>
-          <hr className={styles.divider} />
+      <main
+        id="docs-main"
+        className="flex-1 overflow-y-auto px-12 py-8 max-md:px-4 max-md:py-6 [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.1)_transparent]"
+      >
+        <div className="max-w-[720px]">
+          <h1 className="text-[26px] font-bold text-[var(--title-color)] tracking-[-0.01em] mb-5">
+            {title}
+          </h1>
+          <hr className="border-none border-t border-white/[0.08] mb-8" />
 
-          <div className={styles.body}>{children}</div>
+          <div className="flex flex-col gap-10">{children}</div>
 
-          <div className={styles.pagination}>
+          <div className="flex justify-between items-center pt-8 pb-4 border-t border-white/[0.08] mt-12">
             {prev && (
-              <button className={styles.paginationBtn} onClick={() => onSelect(prev.key)}>
+              <button
+                className="text-[13px] text-foreground px-3.5 py-1.5 border border-white/10 rounded-lg opacity-60 transition-[opacity,border-color] duration-200 hover:opacity-100 hover:border-white/30"
+                onClick={() => onSelect(prev.key)}
+              >
                 ← {prev.label}
               </button>
             )}
             {next && (
               <button
-                className={`${styles.paginationBtn} ${styles.paginationNext}`}
+                className="ml-auto text-[13px] text-foreground px-3.5 py-1.5 border border-white/10 rounded-lg opacity-60 transition-[opacity,border-color] duration-200 hover:opacity-100 hover:border-white/30"
                 onClick={() => onSelect(next.key)}
               >
                 {next.label} →

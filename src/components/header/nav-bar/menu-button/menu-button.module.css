@@ -1,29 +1,18 @@
-.menuButton {
-  padding: .3rem;
-  border-radius: .5rem;
-
-  &.active {
-    & line:nth-child(1) {
-      transform:
-        translateY(7px)
-        rotate(45deg);
-    }
-
-    & line:nth-child(2) {
-      opacity: 0;
-    }
-
-    & line:nth-child(3) {
-      transform:
-        translateY(-7px)
-        rotate(-45deg);
-    }
-  }
+.active line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
 }
 
-.menuButton svg line {
+.active line:nth-child(2) {
+  opacity: 0;
+}
+
+.active line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+button svg line {
   transform-box: fill-box;
   transform-origin: center;
   stroke: var(--brand-color);
-  transition: transform .3s ease, opacity .3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }

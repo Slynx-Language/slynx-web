@@ -1,83 +1,26 @@
 // src/app/components/docs/DocsContent.tsx
-import styles from "./DocsContent.module.css"
 
-// ─── DocsSection ─────────────────────────────────────────────────────────────
-
-interface DocsSectionProps {
-  /**
-   * Used as the HTML `id` of the section element.
-   * Must match the corresponding `TocItem.id` for TOC highlighting to work.
-   * @example "instalacao"
-   */
-  id: string
-  /** Displayed as `# title` above the section content */
-  title: string
-  children: React.ReactNode
-}
-
-/**
- * A titled content block inside a documentation article.
- * Renders an anchored `<section>` that the TOC can scroll to.
- *
- * Can be used directly in `.mdx` files or in JSX article content.
- *
- * @example
- * // In a .mdx file:
- * <DocsSection id="instalacao" title="Instalação">
- *   <p>Run `npm install` to get started.</p>
- * </DocsSection>
- *
- * @example
- * // In JSX:
- * <DocsSection id="intro" title="Introduction">
- *   <p>Welcome to the docs.</p>
- * </DocsSection>
- */
-export function DocsSection({ id, title, children }: DocsSectionProps) {
+export function DocsSection({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
-    <section id={id} className={styles.section}>
-      <h2 className={styles.sectionTitle}># {title}</h2>
-      <div className={styles.sectionBody}>{children}</div>
+    <section id={id} className="flex flex-col gap-4">
+      <h2 className="text-lg font-semibold text-[var(--title-color)] tracking-[-0.01em]">
+        # {title}
+      </h2>
+      <div className="flex flex-col gap-4">{children}</div>
     </section>
   )
 }
 
-// ─── DocsCodeBlock ────────────────────────────────────────────────────────────
-
-interface DocsCodeBlockProps {
-  /** Raw code string to display */
-  code: string
-  /**
-   * Language label shown above the code block.
-   * Purely visual — does not affect syntax highlighting.
-   * @example "typescript" | "bash" | "json"
-   */
-  language?: string
-}
-
-/**
- * Styled code block for documentation articles.
- * Displays a language label when provided.
- *
- * In `.mdx` files, fenced code blocks (``` ```) are automatically
- * mapped to this component via `mdx-components.tsx`.
- *
- * @example
- * // Direct usage:
- * <DocsCodeBlock language="typescript" code={`const x = 1`} />
- *
- * @example
- * // In .mdx (automatic via mdx-components.tsx):
- * ```typescript
- * const x = 1
- * ```
- */
-export function DocsCodeBlock({ code, language }: DocsCodeBlockProps) {
+export function DocsCodeBlock({ code, language }: { code: string; language?: string }) {
   return (
-    <div className={styles.codeWrapper}>
-      {language && <span className={styles.codeLang}>{language}</span>}
-      <pre className={styles.code}>
-        <code>{code}</code>
+    <div className="rounded-[var(--frame-round)] border border-white/[0.08] overflow-hidden">
+      {language && (
+        <span className="block bg-white/[0.05] text-foreground text-[10px] uppercase tracking-[0.1em] px-3.5 py-1 opacity-40">
+          {language}
+        </span>
+      )}
+      <pre className="bg-background m-0 p-4 overflow-x-auto font-mono text-[13px] leading-[1.6] text-foreground [scrollbar-height:4px] [scrollbar-color:rgba(255,255,255,0.1)_transparent]">
+        <code className="font-[inherit] whitespace-pre">{code}</code>
       </pre>
     </div>
   )

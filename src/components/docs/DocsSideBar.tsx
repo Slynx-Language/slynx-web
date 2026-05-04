@@ -1,63 +1,44 @@
+"use client";
 // src/app/components/docs/DocsSidebar.tsx
-"use client"
-
-import styles from "./DocsSideBar.module.css"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-/** A single article link in the sidebar */
 export interface NavItem {
-  /** Text displayed in the sidebar */
   label: string
-  /** Unique article identifier — passed to `onSelect` when clicked */
   key: string
 }
 
-/** A group of articles under a shared heading in the sidebar */
 export interface NavSection {
-  /** Section heading displayed above the article list */
   title: string
   items: NavItem[]
 }
 
 interface DocsSidebarProps {
   sections: NavSection[]
-  /** Key of the currently active article — highlights the matching link */
   activeKey: string
-  /**
-   * Called when the user clicks an article link.
-   * Does not trigger any navigation — the parent is responsible for updating content.
-   * @param key - The key of the selected article
-   */
   onSelect: (key: string) => void
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-/**
- * Left sidebar navigation for the docs.
- * Renders sections and article links as buttons — no routing involved.
- * The active link is highlighted based on `activeKey`.
- *
- * @example
- * <DocsSidebar
- *   sections={NAV_SECTIONS}
- *   activeKey={activeKey}
- *   onSelect={(key) => setActiveKey(key)}
- * />
- */
 export default function DocsSidebar({ sections, activeKey, onSelect }: DocsSidebarProps) {
   return (
-    <aside className={styles.sidebar}>
+    <aside className="w-[200px] min-w-[200px] h-full overflow-y-auto py-6 border-r border-white/[0.08] [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.1)_transparent]">
       <nav>
         {sections.map((section, i) => (
-          <div key={i} className={styles.section}>
-            <p className={styles.sectionTitle}>{section.title}</p>
-            <ul className={styles.list}>
+          <div key={i} className="px-4 mb-7 [&+&]:border-t [&+&]:border-white/[0.08] [&+&]:pt-6">
+            <p className="text-[11px] font-semibold text-foreground uppercase tracking-[0.1em] mb-2 opacity-50">
+              {section.title}
+            </p>
+            <ul className="list-none p-0 m-0">
               {section.items.map((item) => (
                 <li key={item.key}>
                   <button
-                    className={`${styles.link} ${activeKey === item.key ? styles.linkActive : ""}`}
+                    className={`block w-full text-left px-2 py-[5px] text-[13px] text-foreground rounded-md transition-colors duration-200 leading-[1.4] ${
+                      activeKey === item.key
+                        ? "opacity-100 text-[var(--highlight-color)] font-medium"
+                        : "opacity-50 hover:opacity-100 hover:bg-[var(--hover-button)]"
+                    }`}
                     onClick={() => onSelect(item.key)}
                   >
                     {item.label}

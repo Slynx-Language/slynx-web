@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import WhySlynxSection from './SlynxLandingHeroSection';
+import { useState } from "react";
+import WhySlynxSection from "./SlynxLandingHeroSection";
 
-type FeatureId = 'simple' | 'performance' | 'data-oriented';
+type FeatureId = "simple" | "performance" | "data-oriented";
 
 const featureCodeExamples: Record<FeatureId, string> = {
-  simple: `
+	simple: `
 style Vertical(){
   grow_direction = Direction.Vertical;
 }
@@ -30,7 +30,7 @@ component Website {
 }
 
 func main():Component -> Website {};`,
-  performance: `
+	performance: `
 struct Vec2 {
   x: float,
   y: float
@@ -49,7 +49,7 @@ func main(): void{
     });
   }
 }`,
-  'data-oriented': `struct Vec2 {
+	"data-oriented": `struct Vec2 {
   x: float,
   y: float
 }
@@ -64,39 +64,34 @@ func main(): void{
 };
 
 export default function WhySlynxContainer() {
-  const [selectedFeature, setSelectedFeature] = useState<FeatureId>('simple');
+	const [selectedFeature, setSelectedFeature] = useState<FeatureId>("simple");
 
-  const badges = [
-    {
-      id: 'simple',
-      text: 'Simple',
-      variant: selectedFeature === 'simple' ? ('primary' as const) : ('secondary' as const),
-    },
-    {
-      id: 'performance',
-      text: 'Performance',
-      variant:
-        selectedFeature === 'performance' ? ('primary' as const) : ('secondary' as const),
-    },
-    {
-      id: 'data-oriented',
-      text: 'Data Oriented',
-      variant:
-        selectedFeature === 'data-oriented' ? ('primary' as const) : ('secondary' as const),
-    },
-  ];
+	const badges = [
+		{
+			id: "simple",
+			text: "Simple",
+		},
+		{
+			id: "performance",
+			text: "Performance",
+		},
+		{
+			id: "data-oriented",
+			text: "Data Oriented",
+		},
+	];
 
-  return (
-    <WhySlynxSection
-      title="Why"
-      brandName="Slynx?"
-      description="Experience a syntax that feels natural, a compiler that guides you, and performance that scales with your ambitions."
-      badges={badges}
-      codeExample={featureCodeExamples[selectedFeature]}
-      fileName="main.sx"
-      typingSpeed={15}
-      onBadgeSelect={(id) => setSelectedFeature(id as FeatureId)}
-    />
-  );
+	return (
+		<WhySlynxSection
+			title="Why"
+			brandName="Slynx?"
+			description="Experience a syntax that feels natural, a compiler that guides you, and performance that scales with your ambitions."
+			badges={badges}
+			activeTabId={selectedFeature}
+			codeExamplesByBadgeId={featureCodeExamples}
+			fileName="main.sx"
+			typingSpeed={15}
+			onBadgeSelect={(id) => setSelectedFeature(id as FeatureId)}
+		/>
+	);
 }
-
