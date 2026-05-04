@@ -4,9 +4,18 @@ import type { TocItem } from "../../components/docs/DocsTOC";
 import { ARTICLES, NAV_SECTIONS } from "./articles";
 
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 
 export default function DocsPage() {
+	return (
+		<Suspense fallback={<div>Loading...</div>}>
+			<DocsPageContent />
+		</Suspense>
+	);
+}
+
+function DocsPageContent() {
 	const params = useSearchParams();
 	const articleKey = params.get('article') || 'introduction/what-is-it';
 
