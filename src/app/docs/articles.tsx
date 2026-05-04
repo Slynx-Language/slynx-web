@@ -26,6 +26,7 @@ import LexerParser from "./content/contributing/lexer-parser.mdx";
 import Hir from "./content/contributing/hir.mdx";
 import TypeChecker from "./content/contributing/typechecker.mdx";
 import Middleend from "./content/contributing/middleend.mdx";
+import Tuples from "./content/guides/tuples.mdx";
 import { ReactNode } from "react";
 
 type Mdx = (props: any) => ReactNode;
@@ -247,6 +248,14 @@ const DOCS: DocArticle[] = [
       { id: "the-component-return-type", label: "Return Type" },
     ],
     content: Components
+  },
+  {
+    key: "guides/tuples",
+    label: "Tuples",
+    title: "Tuples",
+    section: "Guides",
+    topics: [],
+    content: Tuples
   },
   {
     key: "contributing/overview",
