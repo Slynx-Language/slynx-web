@@ -1,0 +1,91 @@
+# Numeric Types
+
+Slynx currently has only two numeric types: `int` and `float`. However, for cross-platform compatibility, the language will support signed and unsigned integers, as well as different float precisions.
+
+## Current Types
+
+- `int` — currently the only integer type
+- `float` — currently the only floating-point type
+
+## Future Types
+
+These types are planned for future implementation:
+
+### Integers
+```
+|         Type           |       Description      |
+|------------------------|------------------------|
+| `uint8`  /   `int8`    | 8-bit unsigned/signed  |
+| `uint16` /   `int16`   | 16-bit unsigned/signed |
+| `uint32` /   `int32`   | 32-bit unsigned/signed |
+| `uint64` /   `int64`   | 64-bit unsigned/signed |
+```
+
+### Floating-Point
+
+```
+|    Type   |       Description      |
+|-----------|------------------------|
+| `float32` | 32-bit precision float |
+| `float64` | 64-bit presision float |
+```
+
+## Platform Types
+
+`usize` and `isize` are designed to represent platform-dependent pointer sizes:
+
+- `usize` — unsigned platform-dependent size
+- `isize` — signed platform-dependent size
+
+If these types cannot be represented on the target platform, the compiler falls back according to the specification. See [Middleend Specs](https://github.com/Slynx-Language/slynx/blob/main/middleend/README.md) for details.
+
+Current fallbacks:
+
+- `isize` → `int64`
+- `usize` → `uint64`
+
+## Numeric Literals
+
+### Decimal
+
+The default base. Just write the number as-is:
+
+```slynx
+let x = 42;
+let f = 3.14;
+```
+
+### Hexadecimal
+
+Prefix with `0x` (case-insensitive):
+
+```slynx
+let a = 0x2A;   // 42
+let b = 0x2b;   // 43
+```
+
+### Binary
+
+Prefix with `0b`:
+
+```slynx
+let flags = 0b1010; // 10
+```
+
+### Octal
+
+Prefix with `0o`:
+
+```slynx
+let perms = 0o071; // 57
+```
+
+### Digit Separators
+
+You can use `_` anywhere inside a numeric literal to improve readability. The compiler ignores them.
+
+```slynx
+let million = 1_000_000;
+let mask    = 0b1111_0000;
+let big_hex = 0xFF_AA_BB;
+```

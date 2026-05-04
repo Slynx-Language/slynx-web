@@ -1,0 +1,77 @@
+# Planned for v0.0.2
+
+## Numeric Types
+
+The current `int` and `float` types map to `i32` and `f32` in the IR. In v0.0.2, the full set of sized numeric types (`int8`, `int16`, `int32`, `int64`, `uint8`, ..., `float32`, `float64`, `isize`, `usize`) is planned to be exposed at the language level, matching the IR's primitive type system directly.
+
+
+
+This page lists features that are designed and planned for the next release but are **not yet implemented**.
+
+## Imports and Modules
+
+A module system to split code across multiple files and import declarations from other modules.
+
+```slynx
+// idealized syntax
+import { Person } from "./person";
+```
+
+## For Loops
+
+A `for` loop for iterating over collections:
+
+```slynx
+// idealized syntax
+for item in items {
+    // ...
+}
+```
+
+## Array Indexing
+
+Arrays have a fixed size declared in the type as `T[size]`. Vectors are dynamic and declared as `T[]`.
+
+```slynx
+// idealized syntax — subject to change
+
+object Person {
+    age: int
+}
+
+object Example {
+    arr: Person[1000], //array of 1000 person
+    vec: Person[],
+}
+
+let value = Example(arr: [1000]Person(age: 12), vec: Person[], /* empty vector */)
+
+// type: Person[] — vector of Person
+let vec: Person[] = Person[];
+
+let first = arr[0];
+```
+
+The `[size]` prefix on the initializer is intentional — writing `Person(age: 0)[1000]` would read as indexing the expression at 1000, which is wrong.
+
+## Unary Operators
+
+Negation and logical not:
+
+```slynx
+// idealized syntax
+let neg = -x;
+let inv = !flag;
+```
+
+## Compound Assignment Operators
+
+Shorthand assignment combined with arithmetic:
+
+```slynx
+// idealized syntax
+x += 1;
+x -= 1;
+x *= 2;
+x /= 2;
+```

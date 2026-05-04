@@ -1,0 +1,48 @@
+# Tuples
+
+Tuples are heterogeneous collections of values grouped together. They allow multiple types in a fixed-order sequence.
+
+## Creating Tuples
+
+Tuples are created with parentheses:
+
+```slynx
+func get_pair(): (int, str, float) -> (1, "hello", 3.14);
+```
+
+The type signature declares the types of each element, and the value provides the corresponding values in order.
+
+## Accessing Fields
+
+Tuple fields are accessed by index using dot syntax, starting from `0`:
+
+```slynx
+func main(): float {
+    let pair = ((1, "jorge"), 1.0);
+    pair.1        // 1.0
+}
+```
+
+## Nested Tuples
+
+Nested tuples work the same way — chain the index accesses:
+
+```slynx
+func main(): int {
+    let nested = ((42, "ok"), 1.0);
+    nested.0.0    // 42
+}
+```
+
+## Combining with Objects
+
+You can combine tuple access with object field access:
+
+```slynx
+object Person { age: int }
+
+func main(): int {
+    let pair = (Person(age: 22), "ok");
+    pair.0.age    // 22
+}
+```

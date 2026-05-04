@@ -1,0 +1,101 @@
+# Functions
+
+Functions in Slynx can be written in multiple styles, as seen before, but the thing is that executable code can only exist inside them. Thus no global state is avaible(yet). It's idealized to have, but, restrict.
+
+### Variables
+
+Variable creation follows Rust syntax:
+
+```slynx
+let a = 5;       // immutable
+let mut b = 12;    // mutable
+```
+
+Note: Mutability checks are not implemented yet, so `mut` is accepted but not enforced.
+
+### Conditionals
+
+Conditionals work like Rust and can return a value:
+
+```slynx
+if a > b {
+  a
+} else {
+  b
+}
+```
+
+### While Loops
+
+While loops exist as in Rust, but only work for boolean conditions:
+
+```slynx
+while condition {
+  // loop body
+}
+```
+
+### Expressions
+
+Slynx supports various binary expressions:
+
+- **Arithmetic**: `+`, `-`, `*`, `/`
+- **Bitwise**: `<<`, `>>`, `|`, `&`, `^`
+- **Boolean**: `&&`, `||`, `==`, `!=`, `<`, `>`, `<=`, `>=`
+
+Note: Unary expressions (`-x`, `!x`) are not yet implemented.
+
+### Compound Assignment
+
+Compound assignment operators (`+=`, `-=`, `*=`, `/=`) are not yet implemented. Use explicit assignment instead:
+
+```slynx
+let mut x = 10;
+x = x + 5;
+x = x - 3;
+```
+
+## Returns
+
+Slynx is strongly typed — the function signature **must** declare exactly what type is returned. There is no type inference for return types.
+
+```slynx
+func add(a: int, b: int): int -> a + b;
+```
+
+### Tuples
+
+Tuples are supported with parentheses:
+
+```slynx
+func get_pair(): (int, str, float) -> (1, "hello", 3.14);
+```
+
+Tuple fields are accessed by index using dot syntax:
+
+```slynx
+func main(): float {
+    let pair = ((1, "jorge"), 1.0);
+    pair.1        // 1.0
+}
+```
+
+Nested tuples work the same way — chain the index accesses:
+
+```slynx
+func main(): int {
+    let nested = ((42, "ok"), 1.0);
+    nested.0.0    // 42
+}
+```
+
+You can also combine tuple access with object field access:
+
+```slynx
+object Person { age: int }
+
+func main(): int {
+    let pair = (Person(age: 22), "ok");
+    pair.0.age    // 22
+}
+```

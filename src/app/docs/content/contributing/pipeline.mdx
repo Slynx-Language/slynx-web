@@ -1,0 +1,83 @@
+# Compilation Pipeline
+
+Understanding how Slynx compiles source code is useful before contributing. The pipeline is split into distinct phases, each living in its own crate.
+
+## Overview
+
+```
+Source (.slynx)
+    │
+    ▼
+ Lexer  ──────────────────── frontend/
+    │
+    ▼
+ Parser → AST
+    │
+    ▼
+ HIR (High-level IR) + Name Resolution
+    │
+    ▼
+ Type Checker + Monomorphizer
+    │
+    ▼
+ SlynxIR (.sir) ──────────── middleend/
+    │
+    ▼
+ Backend Compiler (e.g. slynx-to-js)
+    │
+    ▼
+ Target output (JS, WASM, native, ...)
+```
+
+## Crates
+
+### `common/`
+
+Shared data structures used across all phases: AST node types, spans, and symbol tables. Both `frontend` and `middleend` depend on this. See [Common Crate](contributing/common) for a detailed breakdown.
+
+### `frontend/`
+
+Everything from source text to a type-checked HIR:
+
+- **Lexer** — tokenizes the source into a flat stream of tokens.
+- **Parser** — consumes tokens and produces an AST.
+- **HIR** — the AST is lowered into a High-level IR with resolved names and explicit scopes.
+- **Type Checker** — walks the HIR and verifies types, infers where possible, and rejects invalid programs.
+- **Monomorphizer** — handles alias resolution and prepares the HIR for lowering.
+
+### `middleend/`
+
+Takes the type-checked HIR and produces `SlynxIR`:
+
+- **SlynxIR** — an SSA-oriented, strongly typed IR. It is the stable contract between the language frontend and any downstream compiler.
+- The IR uses basic blocks, explicit labels, and typed instructions. Components are first-class in the IR with `@bind`, `@emit`, and `@rerender` UI operations for reactivity.
+- Output is written as a `.sir` file by default.
+
+### Backend Compilers
+
+Backend compilers are **separate projects** that consume `SlynxIR` and emit a target. The current proof-of-concept backend is `slynx-to-js`, which compiles `.sir` to JavaScript.
+
+This separation is intentional: the language frontend and IR are target-agnostic. Any platform can be supported by writing a new backend without touching the core language.
+
+## Entry Points
+
+The root crate (`src/`) exposes the public API:
+
+```rust
+// Compile a .slynx file all the way to .sir
+let ir = slynx::compile_to_ir(PathBuf::from("my_file.slynx"))?;
+
+// Inspect intermediate stages
+let context = slynx::SlynxContext::new(Arc::new(PathBuf::from("my_file.slynx")))?;
+let stages = context.build_stages()?;
+println!("{}", stages.hir_text());
+stages.write_hir()?;
+stages.write_ir()?;
+```
+
+## Current State
+
+- The full pipeline from source to `.sir` works on `main`.
+- There is no official CLI binary — the compiler is used as a Rust library.
+- The IR textual format is still Rust debug-style output, not a stable versioned contract.
+- Not every IR construct documented in `middleend/README.md` is emitted yet — treat that document as the target shape, not current behavior.
